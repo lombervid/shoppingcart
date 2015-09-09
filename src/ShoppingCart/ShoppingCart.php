@@ -1,31 +1,42 @@
- <?php
- namespace ShoppingCart;
-
- /**
-  * @version 1.0
-  */
+<?php
+/**
+ * This is a PHP library for creating a simple shopping cart.
+ *
+ * @copyright Copyright (c) 2015, Codelutions.
+ * @link      https://github.com/lombervid/shoppingcart
+ * @package ShoppingCart
+ */
+namespace ShoppingCart;
 
 if ( !is_session_started() )    session_start();
-
 /**
- * @package ShoppingCart
+ * ShoppingCart Class
+ * @version 1.0
  */
 class ShoppingCart {
 
     /**
-     * @var $items Array of items
+     * Version of this library.
+     * @const string
      */
-    private $items;
+    const VERSION = '1.0';
 
     /**
-     * @var $name Name of the $_SESSION
+     * Array of items.
+     * @var array
      */
-    private $name;
+    protected $items;
 
     /**
-     * Class constructor
+     * Name of the Session.
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * Constructor.
      * 
-     * @param string $name Name of the $_SESSION
+     * @param string $name Name of the Session.
      */
     function __construct( $name = 'shopping_cart' ) {
 
@@ -38,7 +49,7 @@ class ShoppingCart {
     }
     
     /**
-     * Get the items form the $_SESSION var
+     * Get the items from the Session.
      */
     private function load() {
         if ( !empty( $_SESSION[$this->name] ) && is_array( $_SESSION[$this->name] ) ) {
@@ -49,10 +60,10 @@ class ShoppingCart {
     }
 
     /**
-     * Save the items in the $_SESSION var
+     * Save the items in the Session.
      */
     private function save() {
-        $_SESSION[$name] = $this->items;
+        $_SESSION[$this->name] = $this->items;
     }
 
     /**
@@ -67,7 +78,7 @@ class ShoppingCart {
     /**
      * Clean the shopping cart
      */
-    public function empty() {
+    public function clean() {
         unset( $this->items );
         $this->save();
         $this->load();
@@ -79,7 +90,7 @@ class ShoppingCart {
      * @return  boolean Return true if there are items in the cart, otherwise false
      */
     public function is_empty() {
-        return ($this->total_items > 0);
+        return ($this->num_items > 0);
     }
 
     /**
@@ -87,7 +98,7 @@ class ShoppingCart {
      * 
      * @return integer Total items in the cart
      */
-    public function total_items() {
+    public function num_items() {
         return count( $this->items );
     }
 
@@ -98,7 +109,7 @@ class ShoppingCart {
      * @param integer   $amount     Amount to add
      * @param array     $fields     Extra fields
      */
-    public function add( $id, $amount = 1, $fields = array() ) {
+    public function add( $id, $amount = 1, $fields = array(), $exc = array() ) {
 
         if ( !is_integer( $id ) && !is_string( $id ) ) {
             throw new Exception('Params $id must be integer or string.', 1);            
@@ -112,6 +123,10 @@ class ShoppingCart {
             throw new Exception('Params $fields must be array.', 1); 
         }
 
+        if ( !is_array( $exc ) ) {
+            throw new Exception('Params $exc must be array.', 1); 
+        }
+
         $u_id = md5( $id );
 
         if ( array_key_exists( $u_id, $this->items ) ) {
@@ -122,7 +137,9 @@ class ShoppingCart {
                 'amount'    =>  intval( $amount )
             );
             foreach ($fields as $field => $value) {
-                $this->items[$u_id][$field] = $value;
+                if ( !in_array($field, $exc) ) {
+                    $this->items[$u_id][$field] = $value;
+                }
             }
         }
         $this->save();
@@ -146,4 +163,4 @@ class ShoppingCart {
             $this->save();
         }
     }
-} 
+}
