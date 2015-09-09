@@ -4,7 +4,8 @@
  *
  * @copyright Copyright (c) 2015, Codelutions.
  * @link      https://github.com/lombervid/shoppingcart
- * @package ShoppingCart
+ * 
+ * @package   ShoppingCart
  */
 namespace ShoppingCart;
 
