@@ -118,15 +118,6 @@ Array
 )
 ```
 
-```php
-```
-
-```php
-```
-
-```php
-```
-
 #### Delete items
 
 You can delete an item calling the method `delete($id)` which receive `$id` as parameter.
@@ -143,11 +134,7 @@ You can clean the shopping cart calling the method `clean()` which remove all th
 $shoppingCart->clean();
 ```
 
-You can see an end-to-end working example in
-[examples/example-captcha.php](examples/example-captcha.php)
-
 ## Contributing
 
 We accept contributions via GitHub Pull Requests, but all contributors need to
-be covered by the standard Google Contributor License Agreement. You can find
-instructions for this in [CONTRIBUTING](CONTRIBUTING.md)
+be covered by the standard.
