@@ -20,7 +20,7 @@ class ShoppingCart {
      * Version of this library.
      * @const string
      */
-    const VERSION = '1.0';
+    const VERSION = '1.0.0';
 
     /**
      * Array of items.
@@ -39,7 +39,7 @@ class ShoppingCart {
      * 
      * @param string $name Name of the Session.
      */
-    function __construct( $name = 'shopping_cart' ) {
+    public function __construct( $name = 'shopping_cart' ) {
 
         if ( !is_string($name) ) {
             throw new Exception('Param $name must be string.', 1);            
@@ -72,7 +72,7 @@ class ShoppingCart {
      * 
      * @return array Items in the shopping cart
      */
-    public function get_items() {
+    public function items() {
         return $this->items;
     }
 
@@ -88,10 +88,10 @@ class ShoppingCart {
     /**
      * Checks if the cart is empty
      * 
-     * @return  boolean Return true if there are items in the cart, otherwise false
+     * @return  boolean Return true if there are not items in the cart, otherwise false
      */
-    public function is_empty() {
-        return ($this->num_items > 0);
+    public function isEmpty() {
+        return ($this->num_items <= 0);
     }
 
     /**
@@ -99,7 +99,7 @@ class ShoppingCart {
      * 
      * @return integer Total items in the cart
      */
-    public function num_items() {
+    public function numItems() {
         return count( $this->items );
     }
 
