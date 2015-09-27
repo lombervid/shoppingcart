@@ -9,28 +9,27 @@
  */
 namespace ShoppingCart;
 
-if ( !is_session_started() )    session_start();
+if (!is_session_started()) {
+    session_start();
+}
 /**
  * ShoppingCart Class
  * @version 1.0
  */
-class ShoppingCart {
-
+class ShoppingCart
+{
     /**
-     * Version of this library.
-     * @const string
+     * @const string Version of this library.
      */
     const VERSION = '1.0.0';
 
     /**
-     * Array of items.
-     * @var array
+     * @var array Array of items.
      */
     protected $items;
 
     /**
-     * Name of the Session.
-     * @var string
+     * @var string Name of the Session.
      */
     protected $name;
 
@@ -39,32 +38,19 @@ class ShoppingCart {
      * 
      * @param string $name Name of the Session.
      */
-    public function __construct( $name = 'shopping_cart' ) {
-
-        if ( !is_string($name) ) {
+    public function __construct($name = 'shopping_cart')
+    {
+        if (!is_string($name)) {
             throw new Exception('Param $name must be string.', 1);            
         }
 
         $this->name = $name;
-        $this->load();
-    }
-    
-    /**
-     * Get the items from the Session.
-     */
-    private function load() {
-        if ( !empty( $_SESSION[$this->name] ) && is_array( $_SESSION[$this->name] ) ) {
+
+        if (!empty($_SESSION[$this->name]) && is_array($_SESSION[$this->name])) {
             $this->items = $_SESSION[$this->name];
         } else {
             $this->items = array();            
-        }        
-    }
-
-    /**
-     * Save the items in the Session.
-     */
-    private function save() {
-        $_SESSION[$this->name] = $this->items;
+        } 
     }
 
     /**
@@ -72,17 +58,18 @@ class ShoppingCart {
      * 
      * @return array Items in the shopping cart
      */
-    public function items() {
+    public function items()
+    {
         return $this->items;
     }
 
     /**
      * Clean the shopping cart
      */
-    public function clean() {
-        unset( $this->items );
+    public function clean()
+    {
+        $this->items = array();
         $this->save();
-        $this->load();
     }
 
     /**
@@ -90,8 +77,9 @@ class ShoppingCart {
      * 
      * @return  boolean Return true if there are not items in the cart, otherwise false
      */
-    public function isEmpty() {
-        return ($this->num_items <= 0);
+    public function isEmpty()
+    {
+        return ($this->numItems() <= 0);
     }
 
     /**
@@ -99,8 +87,9 @@ class ShoppingCart {
      * 
      * @return integer Total items in the cart
      */
-    public function numItems() {
-        return count( $this->items );
+    public function numItems()
+    {
+        return count($this->items);
     }
 
     /**
@@ -110,35 +99,35 @@ class ShoppingCart {
      * @param integer   $amount     Amount to add
      * @param array     $fields     Extra fields
      */
-    public function add( $id, $amount = 1, $fields = array(), $exc = array() ) {
-
-        if ( !is_integer( $id ) && !is_string( $id ) ) {
+    public function add($id, $amount = 1, $fields = array(), $exc = array())
+    {
+        if (!is_integer($id) && !is_string($id)) {
             throw new Exception('Params $id must be integer or string.', 1);            
         }
 
-        if ( !is_numeric( $amount ) ) {
+        if (!is_numeric($amount)) {
             throw new Exception('Params $amount must be integer.', 1); 
         }
 
-        if ( !is_array( $fields ) ) {
+        if (!is_array($fields)) {
             throw new Exception('Params $fields must be array.', 1); 
         }
 
-        if ( !is_array( $exc ) ) {
+        if (!is_array($exc)) {
             throw new Exception('Params $exc must be array.', 1); 
         }
 
-        $u_id = md5( $id );
+        $u_id = md5($id);
 
-        if ( array_key_exists( $u_id, $this->items ) ) {
-            $this->items[$u_id]['amount'] += intval( $amount );
+        if (array_key_exists($u_id, $this->items)) {
+            $this->items[$u_id]['amount'] += intval($amount);
         } else {
             $this->items[$u_id] = array(
                 'id'        =>  $id,
-                'amount'    =>  intval( $amount )
+                'amount'    =>  intval($amount)
             );
             foreach ($fields as $field => $value) {
-                if ( !in_array($field, $exc) ) {
+                if (!in_array($field, $exc)) {
                     $this->items[$u_id][$field] = $value;
                 }
             }
@@ -151,17 +140,25 @@ class ShoppingCart {
      * 
      * @param  integer $id Item ID to delete
      */
-    public function delete( $id ) {
-
-        if ( !is_integer( $id ) && !is_string( $id ) ) {
+    public function delete($id)
+    {
+        if (!is_integer($id) && !is_string($id)) {
             throw new Exception('Params $id must be integer or string.', 1);            
         }
 
-        $u_id = md5( $id );
+        $u_id = md5($id);
 
-        if ( array_key_exists( $u_id, $this->items ) ) {
-            unset( $this->items[$u_id] );
+        if (array_key_exists($u_id, $this->items)) {
+            unset($this->items[$u_id]);
             $this->save();
         }
+    }
+
+    /**
+     * Save the items in the Session.
+     */
+    protected function save()
+    {
+        $_SESSION[$this->name] = $this->items;
     }
 }
