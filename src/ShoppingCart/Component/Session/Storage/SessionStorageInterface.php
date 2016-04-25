@@ -1,5 +1,5 @@
 <?php
-namespace Component\Session;
+namespace ShoppingCart\Component\Session\Storage;
 
 interface SessionStorageInterface
 {
