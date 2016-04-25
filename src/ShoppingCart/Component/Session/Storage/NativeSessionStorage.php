@@ -1,5 +1,5 @@
 <?php
-namespace Component\Session\Storage;
+namespace ShoppingCart\Component\Session\Storage;
 
 class NativeSessionStorage implements SessionStorageInterface
 {
@@ -16,15 +16,17 @@ class NativeSessionStorage implements SessionStorageInterface
 			}
 		}
 	}
+
 	public function isStarted()
 	{
-		if ( php_sapi_name() !== 'cli' ) {
-		    if ( version_compare(PHP_VERSION, '5.4.0', '>=') ) {
+		if (php_sapi_name() !== 'cli') {
+		    if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
 		        return (session_status() === PHP_SESSION_ACTIVE);
 		    } else {
 		        return (session_id() !== '');
 		    }
 		}
+
 		return false;
 	}
 

@@ -36,6 +36,7 @@ class ShoppingCart
             'free'   => 0,
         ),
         'tax'      => 0,
+        'session'  => NULL,
         'optionas' => 'value',
     );
 
@@ -166,7 +167,7 @@ class ShoppingCart
      */
     public function save()
     {
-        $_SESSION[$this->name] = $this->items;
+        $_SESSION[$this->getOption('name')] = $this->items;
     }
 
     protected function filterOptions(array $options)
@@ -186,7 +187,7 @@ class ShoppingCart
         return $this->options[$name];
     }
 
-    protected function __destruct()
+    public function __destruct()
     {
         if ($this->getOption('autosave')) {
             $this->save();

@@ -1,5 +1,8 @@
 <?php
-namespace Component\Session;
+namespace ShoppingCart\Component\Session;
+
+use ShoppingCart\Component\Session\Storage\SessionStorageInterface;
+use ShoppingCart\Component\Session\Storage\NativeSessionStorage;
 
 class Session
 {
@@ -16,7 +19,7 @@ class Session
 		$this->storage->set($name, $value);
 	}
 
-	public static function get($name)
+	public function get($name)
 	{
 		return $this->storage->get($name);
 	}

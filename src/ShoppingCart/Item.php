@@ -76,9 +76,3 @@ class Item
 		return $this->discount;
 	}
 }
-
-$cart = new Item(1, 'My item', 20, 2, array(), 5);
-var_dump($cart->price());
-var_dump($cart->total());
-// var_dump($cart->toArray());
-echo "algo aqui \n";
