@@ -7,9 +7,9 @@ class Item
 	private $name;
 	private $price;
 	private $amount;
+	private $fields;
 	private $discount;
 	private $coupon;
-	private $fields;
 
 	public function __construct(
 		$id,
@@ -26,6 +26,11 @@ class Item
 		$this->fields   = $fields;
 		$this->discount = floatval($discount);
 		$this->coupon   = 0;
+	}
+
+	public function add($amount)
+	{
+		$this->amount += intval($amount);
 	}
 
 	public function get($name)
@@ -54,18 +59,18 @@ class Item
 		return $this->price() * $this->amount;
 	}
 
-	public function toArray()
-	{
-		$item             = $this->fields;
-		$item['id']       = $this->id;
-		$item['name']     = $this->name;
-		$item['price']    = $this->price;
-		$item['amount']   = $this->amount;
-		$item['discount'] = $this->discount;
-		$item['coupon']   = $this->coupon;
+	// public function toArray()
+	// {
+	// 	$item             = $this->fields;
+	// 	$item['id']       = $this->id;
+	// 	$item['name']     = $this->name;
+	// 	$item['price']    = $this->price;
+	// 	$item['amount']   = $this->amount;
+	// 	$item['discount'] = $this->discount;
+	// 	$item['coupon']   = $this->coupon;
 
-		return $item;
-	}
+	// 	return $item;
+	// }
 
 	private function discount()
 	{

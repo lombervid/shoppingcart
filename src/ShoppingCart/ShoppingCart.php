@@ -9,6 +9,10 @@
  */
 namespace ShoppingCart;
 
+use ShoppingCart\Component\Session\Session;
+use ShoppingCart\Component\Session\Storage\SessionStorageInterface;
+use ShoppingCart\Item;
+
 /**
  * ShoppingCart Class
  * @version 2.0
@@ -26,6 +30,11 @@ class ShoppingCart
     protected $items;
 
     /**
+     * @var ShoppingCart\Component\Session Session object.
+     */
+    protected $session;
+
+    /**
      * @var array Cart options.
      */
     protected $options = array(
@@ -36,7 +45,6 @@ class ShoppingCart
             'free'   => 0,
         ),
         'tax'      => 0,
-        'session'  => NULL,
         'optionas' => 'value',
     );
 
@@ -45,19 +53,91 @@ class ShoppingCart
      *
      * @param string $name Name of the Session.
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = array(), SessionStorageInterface $storage = null)
     {
         $this->items   = array();
+        $this->session = new Session($storage);
         $this->options = $this->filterOptions($options);
+        $this->load();
+    }
 
+    /**
+     * Destructor
+     */
+    public function __destruct()
+    {
+        if ($this->getOption('autosave')) {
+            $this->save();
+        }
+    }
 
-        // $this->name = $name;
+    /**
+     * Add an item in the cart
+     *
+     * @param ShoppingCart\Item Item to be added.
+     */
+    public function add(Item $item)
+    {
+        $itemID = md5($item->get('id'));
 
-        // if (!empty($_SESSION[$this->name]) && is_array($_SESSION[$this->name])) {
-        //     $this->items = $_SESSION[$this->name];
-        // } else {
-        //     $this->items = array();
-        // }
+        if (array_key_exists($itemID, $this->items)) {
+            $this->items[$itemID]->add($item->get('amount'));
+        } else {
+            $this->items[$itemID] = $item;
+        }
+    }
+
+    /**
+     * Remove an item from the cart
+     *
+     * @param  integer $id Item ID to delete
+     */
+    public function remove($id)
+    {
+        $itemID = md5($id);
+
+        if (array_key_exists($itemID, $this->items)) {
+            unset($this->items[$itemID]);
+        }
+    }
+
+    public function total()
+    {
+        return $this->subtotal() + $this->shipping() + $this->tax();
+    }
+
+    public function subtotal()
+    {
+        $subtotal = 0;
+
+        foreach ($this->items as $item) {
+            $subtotal += $item->total();
+        }
+
+        return $subtotal;
+    }
+
+    public function shipping()
+    {
+        $shipping = $this->getOption('shipping');
+        $free     = floatval($shipping['free']);
+
+        if ($this->subtotal() > $free) {
+            return 0;
+        }
+
+        return floatval($shipping['amount']);
+    }
+
+    public function tax()
+    {
+        $tax = floatval($this->getOption('tax'));
+
+        if ($tax <= 0) {
+            return 0;
+        }
+
+        return $this->subtotal() * $tax / 100;
     }
 
     /**
@@ -71,9 +151,9 @@ class ShoppingCart
     }
 
     /**
-     * Clean the shopping cart
+     * Remove all items in the shopping cart
      */
-    public function clean()
+    public function clear()
     {
         $this->items = array();
 
@@ -87,7 +167,7 @@ class ShoppingCart
      */
     public function isEmpty()
     {
-        return ($this->numItems() <= 0);
+        return ($this->totalItems() <= 0);
     }
 
     /**
@@ -95,79 +175,17 @@ class ShoppingCart
      *
      * @return integer Total items in the cart
      */
-    public function numItems()
+    public function totalItems()
     {
         return count($this->items);
     }
-
-    /**
-     * Add an item in the cart
-     *
-     * @param integer   $id         Item ID to add
-     * @param integer   $amount     Amount to add
-     * @param array     $fields     Extra fields
-     */
-    // public function add($id, $amount = 1, $fields = array(), $exc = array())
-    // {
-    //     if (!is_integer($id) && !is_string($id)) {
-    //         throw new Exception('Params $id must be integer or string.', 1);
-    //     }
-
-    //     if (!is_numeric($amount)) {
-    //         throw new Exception('Params $amount must be integer.', 1);
-    //     }
-
-    //     if (!is_array($fields)) {
-    //         throw new Exception('Params $fields must be array.', 1);
-    //     }
-
-    //     if (!is_array($exc)) {
-    //         throw new Exception('Params $exc must be array.', 1);
-    //     }
-
-    //     $u_id = md5($id);
-
-    //     if (array_key_exists($u_id, $this->items)) {
-    //         $this->items[$u_id]['amount'] += intval($amount);
-    //     } else {
-    //         $this->items[$u_id] = array(
-    //             'id'        =>  $id,
-    //             'amount'    =>  intval($amount)
-    //         );
-    //         foreach ($fields as $field => $value) {
-    //             if (!in_array($field, $exc)) {
-    //                 $this->items[$u_id][$field] = $value;
-    //             }
-    //         }
-    //     }
-    //     $this->save();
-    // }
-
-    /**
-     * Delete a item from the cart
-     *
-     * @param  integer $id Item ID to delete
-     */
-    // public function delete($id)
-    // {
-    //     if (!is_integer($id) && !is_string($id)) {
-    //         throw new Exception('Params $id must be integer or string.', 1);
-    //     }
-
-    //     $u_id = md5($id);
-
-    //     if (array_key_exists($u_id, $this->items)) {
-    //         unset($this->items[$u_id]);
-    //         $this->save();
-    //     }
-    // }
 
     /**
      * Save the items in the Session.
      */
     public function save()
     {
-        $_SESSION[$this->getOption('name')] = $this->items;
+        $this->session->set($this->getOption('name'), $this->items);
     }
 
     protected function filterOptions(array $options)
@@ -187,10 +205,15 @@ class ShoppingCart
         return $this->options[$name];
     }
 
-    public function __destruct()
+    /**
+     * Load the items from session
+     */
+    protected function load()
     {
-        if ($this->getOption('autosave')) {
-            $this->save();
+        $items = $this->session->get($this->getOption('name'));
+
+        if (is_array($items)) {
+            $this->items = $items;
         }
     }
 }
