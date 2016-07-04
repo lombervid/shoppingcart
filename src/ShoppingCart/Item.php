@@ -33,6 +33,11 @@ class Item
 		$this->amount += intval($amount);
 	}
 
+	public function update($amount)
+	{
+		$this->amount = intval($amount);
+	}
+
 	public function get($name)
 	{
 		if ('fields' != $name && property_exists($this, $name)) {
@@ -59,18 +64,18 @@ class Item
 		return $this->price() * $this->amount;
 	}
 
-	// public function toArray()
-	// {
-	// 	$item             = $this->fields;
-	// 	$item['id']       = $this->id;
-	// 	$item['name']     = $this->name;
-	// 	$item['price']    = $this->price;
-	// 	$item['amount']   = $this->amount;
-	// 	$item['discount'] = $this->discount;
-	// 	$item['coupon']   = $this->coupon;
+    public function toArray()
+    {
+        $item['id']       = $this->id;
+        $item['name']     = $this->name;
+        $item['price']    = $this->price;
+        $item['amount']   = $this->amount;
+        $item['discount'] = $this->discount;
+        $item['coupon']   = $this->coupon;
+        $item['fields']   = $this->fields;
 
-	// 	return $item;
-	// }
+        return $item;
+    }
 
 	private function discount()
 	{

@@ -40,12 +40,11 @@ class ShoppingCart
     protected $options = array(
         'name'     => 'shopping_cart',
         'autosave' => true,
+        'tax'      => 0,
         'shipping' => array(
             'amount' => 0,
             'free'   => 0,
         ),
-        'tax'      => 0,
-        'optionas' => 'value',
     );
 
     /**
@@ -74,14 +73,19 @@ class ShoppingCart
     /**
      * Add an item in the cart
      *
-     * @param ShoppingCart\Item Item to be added.
+     * @param Item $item Item to be added.
+     * @param bool $addAmount If the items exists; true => add the new amount to current, false => replace the current with new
      */
-    public function add(Item $item)
+    public function add(Item $item, $addAmount = true)
     {
         $itemID = md5($item->get('id'));
 
-        if (array_key_exists($itemID, $this->items)) {
-            $this->items[$itemID]->add($item->get('amount'));
+        if ($this->inCart($itemID)) {
+            if ($addAmount) {
+                $this->items[$itemID]->add($item->get('amount'));
+            } else {
+                $this->items[$itemID]->update($item->get('amount'));
+            }
         } else {
             $this->items[$itemID] = $item;
         }
@@ -96,9 +100,12 @@ class ShoppingCart
     {
         $itemID = md5($id);
 
-        if (array_key_exists($itemID, $this->items)) {
+        if ($this->inCart($itemID)) {
             unset($this->items[$itemID]);
+            return true;
         }
+
+        return false;
     }
 
     public function total()
@@ -138,6 +145,15 @@ class ShoppingCart
         }
 
         return $this->subtotal() * $tax / 100;
+    }
+
+    public function inCart($itemID, $encrypted = true)
+    {
+        if (!$encrypted) {
+            $itemID = md5($itemID);
+        }
+
+        return array_key_exists($itemID, $this->items);
     }
 
     /**
@@ -185,7 +201,7 @@ class ShoppingCart
      */
     public function save()
     {
-        $this->session->set($this->getOption('name'), $this->items);
+        $this->session->set($this->option('name'), $this->items);
     }
 
     protected function filterOptions(array $options)
