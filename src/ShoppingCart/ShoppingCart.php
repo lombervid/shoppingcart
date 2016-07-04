@@ -201,7 +201,7 @@ class ShoppingCart
      */
     public function save()
     {
-        $this->session->set($this->option('name'), $this->items);
+        $this->session->set($this->getOption('name'), $this->items);
     }
 
     protected function filterOptions(array $options)
