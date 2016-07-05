@@ -6,7 +6,7 @@ class Item
 	private $id;
 	private $name;
 	private $price;
-	private $amount;
+	private $qty;
 	private $fields;
 	private $discount;
 	private $coupon;
@@ -15,27 +15,27 @@ class Item
 		$id,
 		$name,
 		$price,
-		$amount = 1,
+		$qty = 1,
 		array $fields = array(),
 		$discount = 0
 	) {
-		$this->id       = $id;
-		$this->name     = $name;
+		$this->id       = strval($id);
+		$this->name     = strval($name);
 		$this->price    = floatval($price);
-		$this->amount   = intval($amount);
+		$this->qty      = intval($qty);
 		$this->fields   = $fields;
 		$this->discount = floatval($discount);
 		$this->coupon   = 0;
 	}
 
-	public function add($amount)
+	public function add($qty)
 	{
-		$this->amount += intval($amount);
+		$this->qty += intval($qty);
 	}
 
-	public function update($amount)
+	public function update($qty)
 	{
-		$this->amount = intval($amount);
+		$this->qty = intval($qty);
 	}
 
 	public function get($name)
@@ -61,20 +61,20 @@ class Item
 
 	public function total()
 	{
-		return $this->price() * $this->amount;
+		return $this->price() * $this->qty;
 	}
 
     public function toArray()
     {
-        $item['id']       = $this->id;
-        $item['name']     = $this->name;
-        $item['price']    = $this->price;
-        $item['amount']   = $this->amount;
-        $item['discount'] = $this->discount;
-        $item['coupon']   = $this->coupon;
-        $item['fields']   = $this->fields;
-
-        return $item;
+        return array(
+			'id'       => $this->id,
+			'name'     => $this->name,
+			'price'    => $this->price,
+			'qty'      => $this->qty,
+			'discount' => $this->discount,
+			'coupon'   => $this->coupon,
+			'fields'   => $this->fields,
+        );
     }
 
 	private function discount()
