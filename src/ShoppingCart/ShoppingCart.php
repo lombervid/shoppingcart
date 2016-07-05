@@ -100,7 +100,7 @@ class ShoppingCart
      */
     public function remove($id)
     {
-        $itemID = md5($id);
+        $itemID = md5(strval($id));
 
         if ($this->inCart($itemID)) {
             unset($this->items[$itemID]);
