@@ -19,6 +19,8 @@ use ShoppingCart\Item;
  */
 class ShoppingCart
 {
+    use ArrayFunctionsTrait;
+
     /**
      * @const string Version of this library.
      */
@@ -74,17 +76,17 @@ class ShoppingCart
      * Add an item in the cart
      *
      * @param Item $item Item to be added.
-     * @param bool $addAmount If the items exists; true => add the new amount to current, false => replace the current with new
+     * @param bool $addQty If the items exists; true => add the new qty to current, false => replace the current with new
      */
-    public function add(Item $item, $addAmount = true)
+    public function add(Item $item, $addQty = true)
     {
         $itemID = md5($item->get('id'));
 
         if ($this->inCart($itemID)) {
-            if ($addAmount) {
-                $this->items[$itemID]->add($item->get('amount'));
+            if ($addQty) {
+                $this->items[$itemID]->add($item->get('qty'));
             } else {
-                $this->items[$itemID]->update($item->get('amount'));
+                $this->items[$itemID]->update($item->get('qty'));
             }
         } else {
             $this->items[$itemID] = $item;
@@ -108,11 +110,21 @@ class ShoppingCart
         return false;
     }
 
+    /**
+     * Return the total of the cart
+     *
+     * @return float Cart total
+     */
     public function total()
     {
         return $this->subtotal() + $this->shipping() + $this->tax();
     }
 
+    /**
+     * Return the total price of all the items
+     *
+     * @return float Cart subtotal
+     */
     public function subtotal()
     {
         $subtotal = 0;
@@ -124,6 +136,11 @@ class ShoppingCart
         return $subtotal;
     }
 
+    /**
+     * Return the shipping cost
+     *
+     * @return float Shipping cost
+     */
     public function shipping()
     {
         $shipping = $this->getOption('shipping');
@@ -136,6 +153,11 @@ class ShoppingCart
         return floatval($shipping['amount']);
     }
 
+    /**
+     * Return the tax
+     *
+     * @return float Tax
+     */
     public function tax()
     {
         $tax = floatval($this->getOption('tax'));
@@ -147,8 +169,17 @@ class ShoppingCart
         return $this->subtotal() * $tax / 100;
     }
 
+    /**
+     * Description
+     *
+     * @param type $itemID
+     * @param type|bool $encrypted
+     * @return type
+     */
     public function inCart($itemID, $encrypted = true)
     {
+        $itemID = strval($itemID);
+
         if (!$encrypted) {
             $itemID = md5($itemID);
         }
@@ -201,17 +232,41 @@ class ShoppingCart
      */
     public function save()
     {
-        $this->session->set($this->getOption('name'), $this->items);
+        $this->session->set($this->getOption('name'), $this->itemsToArray());
     }
 
+    /**
+     * Return a list of items as array
+     *
+     * @return array List of items as array
+     */
+    protected function itemsToArray()
+    {
+        return array_map(function ($item) {
+            return $item->toArray();
+        }, $this->items);
+    }
+
+    /**
+     * Filter the cart options
+     *
+     * @param array $options Cart options
+     * @return array Filtered options
+     */
     protected function filterOptions(array $options)
     {
         return array_replace_recursive(
             $this->options,
-            array_intersect_key_recursive($options, $this->options)
+            $this->arrayIntersectKeyRecursive($options, $this->options)
         );
     }
 
+    /**
+     * Get value of the option name
+     *
+     * @param type $name Option name
+     * @return type Option value
+     */
     protected function getOption($name)
     {
         if (!array_key_exists($name, $this->options)) {
@@ -229,7 +284,17 @@ class ShoppingCart
         $items = $this->session->get($this->getOption('name'));
 
         if (is_array($items)) {
-            $this->items = $items;
+            foreach ($items as $item) {
+                $this->add(new Item(
+                    $this->_array($item, 'id'),
+                    $this->_array($item, 'name'),
+                    $this->_array($item, 'price'),
+                    $this->_array($item, 'qty'),
+                    $this->_array($item, 'fields', array(), 'array'),
+                    $this->_array($item, 'discount'),
+                    $this->_array($item, 'coupon')
+                ));
+            }
         }
     }
 }
