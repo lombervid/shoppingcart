@@ -3,7 +3,6 @@
  * by the user before attempting to instantiate any of the ShoppingCart
  * classes.
  */
-require __DIR__ . '/functions.php';
 
 spl_autoload_register(function ($class) {
     if (substr($class, 0, 13) !== 'ShoppingCart\\') {
