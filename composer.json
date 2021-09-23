@@ -1,0 +1,26 @@
+{
+    "name": "lombervid/shoppingcart",
+    "description": "A basic shopping cart class for PHP",
+    "type": "library",
+    "keywords": ["shoppingcart"],
+    "homepage": "https://github.com/lombervid/shoppingcart",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Lombera",
+            "email": "david.lomberlan@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "symfony/var-dumper": "^5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lombervid\\ShoppingCart\\": "src/"
+        }
+    }
+}
