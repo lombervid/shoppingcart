@@ -1,5 +1,5 @@
 <?php
-namespace ShoppingCart\Component\Session\Storage;
+namespace Lombervid\ShoppingCart\Component\Session\Storage;
 
 interface SessionStorageInterface
 {

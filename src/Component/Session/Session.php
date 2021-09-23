@@ -1,8 +1,8 @@
 <?php
-namespace ShoppingCart\Component\Session;
+namespace Lombervid\ShoppingCart\Component\Session;
 
-use ShoppingCart\Component\Session\Storage\SessionStorageInterface;
-use ShoppingCart\Component\Session\Storage\NativeSessionStorage;
+use Lombervid\ShoppingCart\Component\Session\Storage\SessionStorageInterface;
+use Lombervid\ShoppingCart\Component\Session\Storage\NativeSessionStorage;
 
 class Session
 {

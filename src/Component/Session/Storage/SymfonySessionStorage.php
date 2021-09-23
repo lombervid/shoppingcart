@@ -1,5 +1,5 @@
 <?php
-namespace ShoppingCart\Component\Session\Storage;
+namespace Lombervid\ShoppingCart\Component\Session\Storage;
 
 use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
 

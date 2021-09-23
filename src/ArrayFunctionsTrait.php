@@ -1,5 +1,5 @@
 <?php
-namespace ShoppingCart;
+namespace Lombervid\ShoppingCart;
 
 trait ArrayFunctionsTrait
 {

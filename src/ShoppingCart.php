@@ -7,11 +7,11 @@
  *
  * @package   ShoppingCart
  */
-namespace ShoppingCart;
+namespace Lombervid\ShoppingCart;
 
-use ShoppingCart\Component\Session\Session;
-use ShoppingCart\Component\Session\Storage\SessionStorageInterface;
-use ShoppingCart\Item;
+use Lombervid\ShoppingCart\Component\Session\Session;
+use Lombervid\ShoppingCart\Component\Session\Storage\SessionStorageInterface;
+use Lombervid\ShoppingCart\Item;
 
 /**
  * ShoppingCart Class
