@@ -291,8 +291,7 @@ class ShoppingCart
                     $this->_array($item, 'price'),
                     $this->_array($item, 'qty'),
                     $this->_array($item, 'fields', array(), 'array'),
-                    $this->_array($item, 'discount'),
-                    $this->_array($item, 'coupon')
+                    $this->_array($item, 'discount')
                 ));
             }
         }
