@@ -9,7 +9,6 @@ class Item
 	private $qty;
 	private $fields;
 	private $discount;
-	private $coupon;
 
 	public function __construct(
 		$id,
@@ -25,7 +24,6 @@ class Item
 		$this->qty      = intval($qty);
 		$this->fields   = $fields;
 		$this->discount = floatval($discount);
-		$this->coupon   = 0;
 	}
 
 	public function add($qty)
@@ -51,7 +49,7 @@ class Item
 
 	public function hasDiscount()
 	{
-		return (0 < $this->discount || 0 < $this->coupon);
+		return (0 < $this->discount);
 	}
 
 	public function price()
@@ -72,17 +70,12 @@ class Item
 			'price'    => $this->price,
 			'qty'      => $this->qty,
 			'discount' => $this->discount,
-			'coupon'   => $this->coupon,
 			'fields'   => $this->fields,
         );
     }
 
 	private function discount()
 	{
-		if ($this->discount < $this->coupon) {
-			return $this->coupon;
-		}
-
 		return $this->discount;
 	}
 }
