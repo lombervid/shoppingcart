@@ -22,5 +22,10 @@
         "psr-4": {
             "Lombervid\\ShoppingCart\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lombervid\\ShoppingCart\\Tests\\": "tests/"
+        }
     }
 }
