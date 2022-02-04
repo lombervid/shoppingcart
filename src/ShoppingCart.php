@@ -141,10 +141,14 @@ class ShoppingCart
      *
      * @return float Shipping cost
      */
-    public function shipping()
+    public function shipping(): float
     {
         $shipping = $this->getOption('shipping');
         $free     = floatval($shipping['free']);
+
+        if ($this->isEmpty()) {
+            return 0;
+        }
 
         if (0 < $free && $free <= $this->subtotal()) {
             return 0;
