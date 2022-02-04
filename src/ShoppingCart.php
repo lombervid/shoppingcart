@@ -162,7 +162,7 @@ class ShoppingCart
      *
      * @return float Tax
      */
-    public function tax()
+    public function tax(): float
     {
         $tax = floatval($this->getOption('tax'));
 
@@ -170,7 +170,7 @@ class ShoppingCart
             return 0;
         }
 
-        return $this->subtotal() * $tax / 100;
+        return ($this->subtotal() + $this->shipping()) * $tax / 100;
     }
 
     /**
