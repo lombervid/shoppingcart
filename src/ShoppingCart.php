@@ -146,7 +146,7 @@ class ShoppingCart
         $shipping = $this->getOption('shipping');
         $free     = floatval($shipping['free']);
 
-        if ($this->subtotal() > $free) {
+        if (0 < $free && $free <= $this->subtotal()) {
             return 0;
         }
 
