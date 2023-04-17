@@ -2,20 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Lombervid\ShoppingCart\Tests;
+namespace Lombervid\ShoppingCart\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Lombervid\ShoppingCart\Component\Session\Storage\SessionStorageInterface;
 use Lombervid\ShoppingCart\ShoppingCart;
 use Lombervid\ShoppingCart\Item;
+use PHPUnit\Framework\Attributes\Depends;
 
 class ShoppingCartTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $this->storage = $this->createMock(SessionStorageInterface::class);
-        $this->cart = new ShoppingCart(storage: $this->storage);
-    }
+    private SessionStorageInterface $storage;
+    private ShoppingCart $cart;
 
     public function testThereAreNoItemsWhenCartIsCreated(): void
     {
@@ -28,7 +26,6 @@ class ShoppingCartTest extends TestCase
     {
         $options = ['shipping' => ['amount' => 150]];
         $cart = new ShoppingCart($options, $this->storage);
-
         $this->assertSame(0.0, $cart->total());
 
         return $cart;
@@ -37,85 +34,66 @@ class ShoppingCartTest extends TestCase
     public function testAddItem(): ShoppingCart
     {
         $this->cart->add(new Item(15, 'Item', 50.5));
-
         $this->assertSame(1, $this->cart->totalItems());
 
         return $this->cart;
     }
 
-    /**
-     * @depends testAddItem
-     */
+    #[Depends('testAddItem')]
     public function testItemAlreadyInCartIsAddedCorrectly(ShoppingCart $cart): ShoppingCart
     {
         $cart->add(new Item(15, 'Item', 50.5));
-
         $this->assertSame(1, $cart->totalItems());
         $this->assertSame(101.0, $cart->total());
 
         return $cart;
     }
 
-    /**
-     * @depends testItemAlreadyInCartIsAddedCorrectly
-     */
+    #[Depends('testItemAlreadyInCartIsAddedCorrectly')]
     public function testNewItemIsAddedCorrectly(ShoppingCart $cart): ShoppingCart
     {
         $cart->add(new Item(25, 'Item 2', 100));
-
         $this->assertSame(2, $cart->totalItems());
         $this->assertSame(201.0, $cart->total());
 
         return $cart;
     }
 
-    /**
-     * @depends testNewItemIsAddedCorrectly
-     */
+    #[Depends('testNewItemIsAddedCorrectly')]
     public function testAddItemAlreadyInCartReplacingQuantity(ShoppingCart $cart): ShoppingCart
     {
         $cart->add(new Item(15, 'Item', 50.5), false);
-
         $this->assertSame(150.5, $cart->total());
 
         return $cart;
     }
 
-    /**
-     * @depends testAddItemAlreadyInCartReplacingQuantity
-     */
+    #[Depends('testAddItemAlreadyInCartReplacingQuantity')]
     public function testAddingItemAlreadyInCartKeepsOriginalPrice(ShoppingCart $cart): ShoppingCart
     {
         $cart->add(new Item(15, 'Item', 1500));
-
         $this->assertSame(201.0, $cart->total());
 
         return $cart;
     }
 
-    /**
-     * @depends testAddingItemAlreadyInCartKeepsOriginalPrice
-     */
+    #[Depends('testAddingItemAlreadyInCartKeepsOriginalPrice')]
     public function testRemoveItem(ShoppingCart $cart): ShoppingCart
     {
         $cart->remove(15);
-
         $this->assertSame(1, $cart->totalItems());
         $this->assertSame(100.0, $cart->total());
 
         return $cart;
     }
 
-    /**
-     * @depends testRemoveItem
-     */
+    #[Depends('testRemoveItem')]
     public function testClearCart(ShoppingCart $cart): void
     {
         $this->assertSame(1, $cart->totalItems());
         $this->assertSame(100.0, $cart->total());
 
         $cart->clear();
-
         $this->assertSame([], $cart->items());
         $this->assertSame(0, $cart->totalItems());
         $this->assertSame(0.0, $cart->total());
@@ -125,17 +103,13 @@ class ShoppingCartTest extends TestCase
     {
         $cart = new ShoppingCart(['tax' => 15], $this->storage);
         $cart->add(new Item(25, 'Item', 100));
-
         $this->assertSame(115.0, $cart->total());
     }
 
-    /**
-     * @depends testNoShippingCostWhenCartIsEmpty
-     */
+    #[Depends('testNoShippingCostWhenCartIsEmpty')]
     public function testShipping($cart): void
     {
         $cart->add(new Item(25, 'Item', 100));
-
         $this->assertSame(250.0, $cart->total());
     }
 
@@ -147,17 +121,15 @@ class ShoppingCartTest extends TestCase
                 'free' => 500,
             ]
         ];
+
         $cart = new ShoppingCart($options, $this->storage);
         $cart->add(new Item(25, 'Item', 100));
-
         $this->assertSame(250.0, $cart->total());
 
         $cart->add(new Item(15, 'Item', 399));
-
         $this->assertSame(649.0, $cart->total());
 
         $cart->add(new Item(13, 'Item', 1));
-
         $this->assertSame(500.0, $cart->total());
     }
 
@@ -170,13 +142,18 @@ class ShoppingCartTest extends TestCase
                 'free' => 700,
             ],
         ];
+
         $cart = new ShoppingCart($options, $this->storage);
         $cart->add(new Item(25, 'Item', 100));
-
         $this->assertSame(287.5, $cart->total());
 
         $cart->add(new Item(15, 'Item', 600));
-
         $this->assertSame(805.00, $cart->total());
+    }
+
+    protected function setUp(): void
+    {
+        $this->storage = $this->createMock(SessionStorageInterface::class);
+        $this->cart = new ShoppingCart(storage: $this->storage);
     }
 }
