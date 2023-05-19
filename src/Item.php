@@ -18,6 +18,18 @@ class Item
         array $fields = array(),
         $discount = 0
     ) {
+        if ($price < 0) {
+            throw new \InvalidArgumentException("Price must to be greater than or equal to zero");
+        }
+
+        if ($qty <= 0) {
+            throw new \InvalidArgumentException("Quantity must be greater than zero");
+        }
+
+        if ($discount < 0) {
+            throw new \InvalidArgumentException("Discount must be greater than or equal to zero");
+        }
+
         $this->id       = strval($id);
         $this->name     = strval($name);
         $this->price    = floatval($price);
