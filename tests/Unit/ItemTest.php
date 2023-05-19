@@ -12,7 +12,7 @@ class ItemTest extends TestCase
 {
     public function testSingleItem(): Item
     {
-        $item = new Item(1, 'Item', 15);
+        $item = new Item('1', 'Item', 15);
 
         $this->assertSame(15.0, $item->price());
         $this->assertSame(15.0, $item->total());
@@ -23,13 +23,13 @@ class ItemTest extends TestCase
     public function testExceptionsAreThrownForNegativePrice(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Item(1, 'Item', -15);
+        new Item('1', 'Item', -15);
     }
 
     public function testExceptionsAreThrownForZeroOrLowerQuantity(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Item(1, 'Item', 15, 0);
+        new Item('1', 'Item', 15, 0);
     }
 
     #[DependsUsingDeepClone('testSingleItem')]
@@ -52,7 +52,7 @@ class ItemTest extends TestCase
 
     public function testAddingItemWithQuantity(): void
     {
-        $item = new Item(1, 'Item', 15, 3);
+        $item = new Item('1', 'Item', 15, 3);
 
         $this->assertSame(15.0, $item->price());
         $this->assertSame(45.0, $item->total());
@@ -60,21 +60,21 @@ class ItemTest extends TestCase
 
     public function testNoDiscount(): void
     {
-        $item = new Item(1, 'Item', 15);
+        $item = new Item('1', 'Item', 15);
         $this->assertSame(false, $item->hasDiscount());
         $this->assertSame(15.0, $item->total());
     }
 
     public function testDiscountApplies(): void
     {
-        $item = new Item(1, 'Item', 15, discount: 10);
+        $item = new Item('1', 'Item', 15, discount: 10);
         $this->assertSame(true, $item->hasDiscount());
         $this->assertSame(5.0, $item->total());
     }
 
     public function testDiscountAppliesWithQuantity(): void
     {
-        $item = new Item(1, 'Item', 15, 3, discount: 10);
+        $item = new Item('1', 'Item', 15, 3, discount: 10);
         $this->assertSame(true, $item->hasDiscount());
         $this->assertSame(15.0, $item->total());
     }
@@ -82,12 +82,12 @@ class ItemTest extends TestCase
     public function testExceptionsAreThrownWithNegativeDiscount(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Item(1, 'Item', 115, discount: -10);
+        new Item('1', 'Item', 115, discount: -10);
     }
 
     public function testToArrayMethod(): void
     {
-        $item = new Item(1, 'Item', 15);
+        $item = new Item('1', 'Item', 15);
 
         $this->assertSame([
             'id' => '1',
@@ -101,7 +101,7 @@ class ItemTest extends TestCase
 
     public function testToArrayMethodWithExtraArguments(): Item
     {
-        $item = new Item(100, 'New Item', 68.5, 2, [
+        $item = new Item('100', 'New Item', 68.5, 2, [
             'description' => 'New item from collection',
         ], 15);
 

@@ -33,7 +33,7 @@ class ShoppingCartTest extends TestCase
 
     public function testAddItem(): ShoppingCart
     {
-        $this->cart->add(new Item(15, 'Item', 50.5));
+        $this->cart->add(new Item('15', 'Item', 50.5));
         $this->assertSame(1, $this->cart->totalItems());
 
         return $this->cart;
@@ -42,7 +42,7 @@ class ShoppingCartTest extends TestCase
     #[Depends('testAddItem')]
     public function testItemAlreadyInCartIsAddedCorrectly(ShoppingCart $cart): ShoppingCart
     {
-        $cart->add(new Item(15, 'Item', 50.5));
+        $cart->add(new Item('15', 'Item', 50.5));
         $this->assertSame(1, $cart->totalItems());
         $this->assertSame(101.0, $cart->total());
 
@@ -52,7 +52,7 @@ class ShoppingCartTest extends TestCase
     #[Depends('testItemAlreadyInCartIsAddedCorrectly')]
     public function testNewItemIsAddedCorrectly(ShoppingCart $cart): ShoppingCart
     {
-        $cart->add(new Item(25, 'Item 2', 100));
+        $cart->add(new Item('25', 'Item 2', 100));
         $this->assertSame(2, $cart->totalItems());
         $this->assertSame(201.0, $cart->total());
 
@@ -62,7 +62,7 @@ class ShoppingCartTest extends TestCase
     #[Depends('testNewItemIsAddedCorrectly')]
     public function testAddItemAlreadyInCartReplacingQuantity(ShoppingCart $cart): ShoppingCart
     {
-        $cart->add(new Item(15, 'Item', 50.5), false);
+        $cart->add(new Item('15', 'Item', 50.5), false);
         $this->assertSame(150.5, $cart->total());
 
         return $cart;
@@ -71,7 +71,7 @@ class ShoppingCartTest extends TestCase
     #[Depends('testAddItemAlreadyInCartReplacingQuantity')]
     public function testAddingItemAlreadyInCartKeepsOriginalPrice(ShoppingCart $cart): ShoppingCart
     {
-        $cart->add(new Item(15, 'Item', 1500));
+        $cart->add(new Item('15', 'Item', 1500));
         $this->assertSame(201.0, $cart->total());
 
         return $cart;
@@ -80,7 +80,7 @@ class ShoppingCartTest extends TestCase
     #[Depends('testAddingItemAlreadyInCartKeepsOriginalPrice')]
     public function testRemoveItem(ShoppingCart $cart): ShoppingCart
     {
-        $cart->remove(15);
+        $cart->remove('15');
         $this->assertSame(1, $cart->totalItems());
         $this->assertSame(100.0, $cart->total());
 
@@ -102,14 +102,14 @@ class ShoppingCartTest extends TestCase
     public function testTax(): void
     {
         $cart = new ShoppingCart(['tax' => 15], $this->storage);
-        $cart->add(new Item(25, 'Item', 100));
+        $cart->add(new Item('25', 'Item', 100));
         $this->assertSame(115.0, $cart->total());
     }
 
     #[Depends('testNoShippingCostWhenCartIsEmpty')]
     public function testShipping($cart): void
     {
-        $cart->add(new Item(25, 'Item', 100));
+        $cart->add(new Item('25', 'Item', 100));
         $this->assertSame(250.0, $cart->total());
     }
 
@@ -123,13 +123,13 @@ class ShoppingCartTest extends TestCase
         ];
 
         $cart = new ShoppingCart($options, $this->storage);
-        $cart->add(new Item(25, 'Item', 100));
+        $cart->add(new Item('25', 'Item', 100));
         $this->assertSame(250.0, $cart->total());
 
-        $cart->add(new Item(15, 'Item', 399));
+        $cart->add(new Item('15', 'Item', 399));
         $this->assertSame(649.0, $cart->total());
 
-        $cart->add(new Item(13, 'Item', 1));
+        $cart->add(new Item('13', 'Item', 1));
         $this->assertSame(500.0, $cart->total());
     }
 
@@ -144,10 +144,10 @@ class ShoppingCartTest extends TestCase
         ];
 
         $cart = new ShoppingCart($options, $this->storage);
-        $cart->add(new Item(25, 'Item', 100));
+        $cart->add(new Item('25', 'Item', 100));
         $this->assertSame(287.5, $cart->total());
 
-        $cart->add(new Item(15, 'Item', 600));
+        $cart->add(new Item('15', 'Item', 600));
         $this->assertSame(805.00, $cart->total());
     }
 
