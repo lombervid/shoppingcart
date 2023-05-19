@@ -1,8 +1,10 @@
 {
     "name": "lombervid/shoppingcart",
-    "description": "A basic shopping cart class for PHP",
     "type": "library",
-    "keywords": ["shoppingcart"],
+    "description": "A simple shopping cart class for PHP",
+    "keywords": [
+        "shoppingcart"
+    ],
     "homepage": "https://github.com/lombervid/shoppingcart",
     "license": "MIT",
     "authors": [
