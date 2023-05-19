@@ -1,22 +1,18 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Lombervid\ShoppingCart;
 
 class Item
 {
-    private $id;
-    private $name;
-    private $price;
-    private $qty;
-    private $fields;
-    private $discount;
-
     public function __construct(
-        $id,
-        $name,
-        $price,
-        $qty = 1,
-        array $fields = array(),
-        $discount = 0
+        private string $id,
+        private string $name,
+        private float $price,
+        private int $qty = 1,
+        private array $fields = [],
+        private float $discount = 0,
     ) {
         if ($price < 0) {
             throw new \InvalidArgumentException("Price must to be greater than or equal to zero");
@@ -29,52 +25,47 @@ class Item
         if ($discount < 0) {
             throw new \InvalidArgumentException("Discount must be greater than or equal to zero");
         }
-
-        $this->id       = strval($id);
-        $this->name     = strval($name);
-        $this->price    = floatval($price);
-        $this->qty      = intval($qty);
-        $this->fields   = $fields;
-        $this->discount = floatval($discount);
     }
 
-    public function add($qty)
+    public function add(int $qty): void
     {
-        $this->qty += intval($qty);
+        $this->qty += $qty;
     }
 
-    public function update($qty)
+    public function update(int $qty): void
     {
-        $this->qty = intval($qty);
+        $this->qty = $qty;
     }
 
-    public function get($name)
+    public function get(string $name): mixed
     {
         if ('fields' != $name && property_exists($this, $name)) {
             return $this->{$name};
-        } elseif (array_key_exists($name, $this->fields)) {
+        }
+
+        if (array_key_exists($name, $this->fields)) {
             return $this->fields[$name];
         }
 
         return '';
     }
 
-    public function hasDiscount()
+    public function hasDiscount(): bool
     {
         return (0 < $this->discount);
     }
 
-    public function price()
+    public function price(): float
     {
         return $this->price - $this->discount();
     }
 
-    public function total()
+    public function total(): float
     {
         return $this->price() * $this->qty;
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return array(
             'id'       => $this->id,
@@ -86,7 +77,7 @@ class Item
         );
     }
 
-    private function discount()
+    private function discount(): float
     {
         return $this->discount;
     }

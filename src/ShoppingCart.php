@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is a PHP library to create a simple shopping cart.
  *
@@ -7,6 +8,9 @@
  *
  * @package   ShoppingCart
  */
+
+declare(strict_types=1);
+
 namespace Lombervid\ShoppingCart;
 
 use Lombervid\ShoppingCart\Component\Session\Session;
@@ -24,37 +28,38 @@ class ShoppingCart
     /**
      * @const string Version of this library.
      */
-    const VERSION = '2.0';
+    final public const VERSION = '3.0';
 
     /**
-     * @var array Array of items.
+     * @var Item[] Array of items.
      */
-    protected $items;
+    protected array $items;
 
     /**
      * @var ShoppingCart\Component\Session Session object.
      */
-    protected $session;
+    protected Session $session;
 
     /**
      * @var array Cart options.
      */
-    protected $options = array(
+    protected array $options = [
         'name'     => 'shopping_cart',
         'autosave' => true,
         'tax'      => 0,
-        'shipping' => array(
+        'shipping' => [
             'amount' => 0,
             'free'   => 0,
-        ),
-    );
+        ],
+    ];
 
     /**
      * Constructor.
      *
-     * @param string $name Name of the Session.
+     * @param array $options Cart options.
+     * @param SessionStorageInterface $storage Cart storage.
      */
-    public function __construct(array $options = array(), SessionStorageInterface $storage = null)
+    public function __construct(array $options = [], SessionStorageInterface $storage = null)
     {
         $this->items   = array();
         $this->session = new Session($storage);
@@ -76,14 +81,14 @@ class ShoppingCart
      * Add an item in the cart
      *
      * @param Item $item Item to be added.
-     * @param bool $addQty If the items exists; true => add the new qty to current, false => replace the current with new
+     * @param bool $append If item exist: true => appends the new qty to current, false => replace the current with new
      */
-    public function add(Item $item, $addQty = true)
+    public function add(Item $item, bool $append = true): void
     {
         $itemID = md5($item->get('id'));
 
         if ($this->inCart($itemID)) {
-            if ($addQty) {
+            if ($append) {
                 $this->items[$itemID]->add($item->get('qty'));
             } else {
                 $this->items[$itemID]->update($item->get('qty'));
@@ -96,11 +101,11 @@ class ShoppingCart
     /**
      * Remove an item from the cart
      *
-     * @param  integer $id Item ID to delete
+     * @param  string $id Item ID to delete
      */
-    public function remove($id)
+    public function remove(string $id): bool
     {
-        $itemID = md5(strval($id));
+        $itemID = md5($id);
 
         if ($this->inCart($itemID)) {
             unset($this->items[$itemID]);
@@ -115,7 +120,7 @@ class ShoppingCart
      *
      * @return float Cart total
      */
-    public function total()
+    public function total(): float
     {
         return $this->subtotal() + $this->shipping() + $this->tax();
     }
@@ -125,7 +130,7 @@ class ShoppingCart
      *
      * @return float Cart subtotal
      */
-    public function subtotal()
+    public function subtotal(): float
     {
         $subtotal = 0;
 
@@ -144,7 +149,7 @@ class ShoppingCart
     public function shipping(): float
     {
         $shipping = $this->getOption('shipping');
-        $free     = floatval($shipping['free']);
+        $free = floatval($shipping['free']);
 
         if ($this->isEmpty()) {
             return 0;
@@ -174,39 +179,36 @@ class ShoppingCart
     }
 
     /**
-     * Description
+     * Checks if item exists in cart
      *
-     * @param type $itemID
-     * @param type|bool $encrypted
-     * @return type
+     * @param string $id Item ID to find
+     * @param bool $encrypted If ID is already encrypted
      */
-    public function inCart($itemID, $encrypted = true)
+    public function inCart(string $id, bool $encrypted = true): bool
     {
-        $itemID = strval($itemID);
-
-        if (!$encrypted) {
-            $itemID = md5($itemID);
-        }
+        $itemID = $encrypted ? $id : md5($id);
 
         return array_key_exists($itemID, $this->items);
     }
 
     /**
-     * Return the items
+     * Return all the items
      *
-     * @return array Items in the shopping cart
+     * @return Item[] Items in cart
      */
-    public function items()
+    public function items(): array
     {
         return $this->items;
     }
 
     /**
-     * Remove all items in the shopping cart
+     * Remove all items
+     *
+     * @return static
      */
-    public function clear()
+    public function clear(): static
     {
-        $this->items = array();
+        $this->items = [];
 
         return $this;
     }
@@ -214,19 +216,19 @@ class ShoppingCart
     /**
      * Checks if the cart is empty
      *
-     * @return  boolean Return true if there are not items in the cart, otherwise false
+     * @return  bool Return true if there are not items in the cart, otherwise false
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return ($this->totalItems() <= 0);
     }
 
     /**
-     * Checks the total items in the cart
+     * Return the total number of items in the cart
      *
-     * @return integer Total items in the cart
+     * @return int Total items in the cart
      */
-    public function totalItems()
+    public function totalItems(): int
     {
         return count($this->items);
     }
@@ -244,7 +246,8 @@ class ShoppingCart
      *
      * @return array List of items as array
      */
-    protected function itemsToArray()
+    // TODO add test
+    protected function itemsToArray(): array
     {
         return array_map(function ($item) {
             return $item->toArray();
@@ -255,9 +258,10 @@ class ShoppingCart
      * Filter the cart options
      *
      * @param array $options Cart options
+     *
      * @return array Filtered options
      */
-    protected function filterOptions(array $options)
+    protected function filterOptions(array $options): array
     {
         return array_replace_recursive(
             $this->options,
@@ -268,13 +272,14 @@ class ShoppingCart
     /**
      * Get value of the option name
      *
-     * @param type $name Option name
-     * @return type Option value
+     * @param string $name Option name
+     *
+     * @return mixed Option value
      */
-    protected function getOption($name)
+    protected function getOption(string $name): mixed
     {
         if (!array_key_exists($name, $this->options)) {
-            throw new Exception('Invalid option.', 1);
+            throw new \Exception('Invalid option', 1);
         }
 
         return $this->options[$name];
@@ -283,7 +288,8 @@ class ShoppingCart
     /**
      * Load the items from session
      */
-    protected function load()
+    // TODO add test
+    protected function load(): void
     {
         $items = $this->session->get($this->getOption('name'));
 
