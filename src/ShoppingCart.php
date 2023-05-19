@@ -3,7 +3,7 @@
 /**
  * This is a PHP library to create a simple shopping cart.
  *
- * @copyright Copyright (c) 2016, Codelutions.
+ * @copyright Copyright (c) 2023, lombervid.
  * @link      https://github.com/lombervid/shoppingcart
  *
  * @package   ShoppingCart
