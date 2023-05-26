@@ -61,7 +61,7 @@ class ShoppingCart
      */
     public function __construct(array $options = [], SessionStorageInterface $storage = null)
     {
-        $this->items   = array();
+        $this->items   = [];
         $this->session = new Session($storage);
         $this->options = $this->filterOptions($options);
         $this->load();
@@ -300,7 +300,7 @@ class ShoppingCart
                     $this->_array($item, 'name'),
                     $this->_array($item, 'price'),
                     $this->_array($item, 'qty'),
-                    $this->_array($item, 'fields', array(), 'array'),
+                    $this->_array($item, 'fields', [], 'array'),
                     $this->_array($item, 'discount')
                 ));
             }
