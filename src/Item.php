@@ -67,14 +67,14 @@ class Item
 
     public function toArray(): array
     {
-        return array(
+        return [
             'id'       => $this->id,
             'name'     => $this->name,
             'price'    => $this->price,
             'qty'      => $this->qty,
             'discount' => $this->discount,
             'fields'   => $this->fields,
-        );
+        ];
     }
 
     private function discount(): float
