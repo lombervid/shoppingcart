@@ -236,7 +236,7 @@ class ShoppingCart
     /**
      * Save the items in the Session.
      */
-    public function save()
+    public function save(): void
     {
         $this->session->set($this->getOption('name'), $this->itemsToArray());
     }
