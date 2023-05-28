@@ -18,7 +18,7 @@ use Lombervid\ShoppingCart\Support\Arr;
 
 /**
  * ShoppingCart Class
- * @version 2.0
+ * @version 3.0
  */
 class ShoppingCart
 {
