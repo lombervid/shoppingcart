@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Lombervid\ShoppingCart\Component\Session\Storage;
+namespace Lombervid\ShoppingCart\Component\Storage;
 
-class NativeSessionStorage implements SessionStorageInterface
+class NativeSessionStorage implements StorageInterface
 {
     public function __construct()
     {

@@ -1,11 +1,9 @@
 <?php
 
-namespace Lombervid\ShoppingCart\Component\Session\Storage;
+namespace Lombervid\ShoppingCart\Component\Storage;
 
-interface SessionStorageInterface
+interface StorageInterface
 {
-    public function start(): void;
-    public function isStarted(): bool;
     public function set(string $name, mixed $value): void;
     public function get(string $name): string;
     public function remove(string $name): void;
