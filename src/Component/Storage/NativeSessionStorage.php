@@ -22,15 +22,7 @@ class NativeSessionStorage implements StorageInterface
 
     public function isStarted(): bool
     {
-        if (php_sapi_name() !== 'cli') {
-            if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
-                return (session_status() === PHP_SESSION_ACTIVE);
-            } else {
-                return (session_id() !== '');
-            }
-        }
-
-        return false;
+        return session_status() === PHP_SESSION_ACTIVE;
     }
 
     public function set(string $name, mixed $value): void
@@ -40,20 +32,14 @@ class NativeSessionStorage implements StorageInterface
 
     public function get(string $name): string
     {
-        if (!isset($_SESSION[$name])) {
-            return '';
-        }
-
-        return $_SESSION[$name];
+        return $_SESSION[$name] ?? '';
     }
 
     public function remove(string $name): void
     {
-        if (!isset($_SESSION[$name])) {
-            return;
+        if (isset($_SESSION[$name])) {
+            unset($_SESSION[$name]);
         }
-
-        unset($_SESSION[$name]);
     }
 
     public function clear(): void
