@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Lombervid\ShoppingCart;
 
 use Lombervid\ShoppingCart\Component\Storage\StorageInterface;
+use Lombervid\ShoppingCart\Support\Arr;
 
 /**
  * ShoppingCart Class
@@ -21,8 +22,6 @@ use Lombervid\ShoppingCart\Component\Storage\StorageInterface;
  */
 class ShoppingCart
 {
-    use ArrayFunctionsTrait;
-
     /**
      * @const string Version of this library.
      */
@@ -263,7 +262,7 @@ class ShoppingCart
     {
         return array_replace_recursive(
             $this->options,
-            $this->arrayIntersectKeyRecursive($options, $this->options)
+            Arr::intersectKeyRecursive($options, $this->options)
         );
     }
 
@@ -294,12 +293,12 @@ class ShoppingCart
         if (is_array($items)) {
             foreach ($items as $item) {
                 $this->add(new Item(
-                    $this->_array($item, 'id'),
-                    $this->_array($item, 'name'),
-                    $this->_array($item, 'price'),
-                    $this->_array($item, 'qty'),
-                    $this->_array($item, 'fields', [], 'array'),
-                    $this->_array($item, 'discount')
+                    Arr::get($item, 'id'),
+                    Arr::get($item, 'name'),
+                    Arr::get($item, 'price'),
+                    Arr::get($item, 'qty'),
+                    Arr::get($item, 'fields', [], 'array'),
+                    Arr::get($item, 'discount')
                 ));
             }
         }

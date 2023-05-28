@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Lombervid\ShoppingCart;
+namespace Lombervid\ShoppingCart\Support;
 
-trait ArrayFunctionsTrait
+class Arr
 {
     /**
      * Recursively computes the intersection of arrays using keys for comparison.
@@ -14,14 +14,14 @@ trait ArrayFunctionsTrait
      *
      * @return  array associative array containing all the entries of array1 which have keys that are present in array2.
      **/
-    public function arrayIntersectKeyRecursive(array $array1, array $array2): array
+    public static function intersectKeyRecursive(array $array1, array $array2): array
     {
         $array1 = array_intersect_key($array1, $array2);
 
         foreach ($array1 as $key => &$value) {
             if (is_array($array2[$key])) {
                 if (is_array($value)) {
-                    $value = $this->arrayIntersectKeyRecursive($value, $array2[$key]);
+                    $value = static::intersectKeyRecursive($value, $array2[$key]);
                 } else {
                     unset($array1[$key]);
                 }
@@ -42,7 +42,7 @@ trait ArrayFunctionsTrait
      *
      * @return mixed of the position or $default value
      */
-    public function _array(
+    public static function get(
         array $arr,
         int|string $key,
         mixed $default = null,
