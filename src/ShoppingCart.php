@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Lombervid\ShoppingCart;
 
-use Lombervid\ShoppingCart\Component\Session\Session;
-use Lombervid\ShoppingCart\Component\Session\Storage\SessionStorageInterface;
-use Lombervid\ShoppingCart\Item;
+use Lombervid\ShoppingCart\Component\Storage\StorageInterface;
 
 /**
  * ShoppingCart Class
@@ -36,9 +34,9 @@ class ShoppingCart
     protected array $items;
 
     /**
-     * @var ShoppingCart\Component\Session Session object.
+     * @var StorageInterface Storage object.
      */
-    protected Session $session;
+    protected StorageInterface $storage;
 
     /**
      * @var array Cart options.
@@ -57,12 +55,12 @@ class ShoppingCart
      * Constructor.
      *
      * @param array $options Cart options.
-     * @param SessionStorageInterface $storage Cart storage.
+     * @param StorageInterface $storage Cart storage.
      */
-    public function __construct(array $options = [], SessionStorageInterface $storage = null)
+    public function __construct(array $options = [], StorageInterface $storage = null)
     {
         $this->items   = [];
-        $this->session = new Session($storage);
+        $this->storage = $storage ?: new StorageInterface();
         $this->options = $this->filterOptions($options);
         $this->load();
     }
@@ -238,7 +236,7 @@ class ShoppingCart
      */
     public function save(): void
     {
-        $this->session->set($this->getOption('name'), $this->itemsToArray());
+        $this->storage->set($this->getOption('name'), $this->itemsToArray());
     }
 
     /**
@@ -291,7 +289,7 @@ class ShoppingCart
     // TODO add test
     protected function load(): void
     {
-        $items = $this->session->get($this->getOption('name'));
+        $items = $this->storage->get($this->getOption('name'));
 
         if (is_array($items)) {
             foreach ($items as $item) {

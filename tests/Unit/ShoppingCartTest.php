@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Lombervid\ShoppingCart\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Lombervid\ShoppingCart\Component\Session\Storage\SessionStorageInterface;
+use Lombervid\ShoppingCart\Component\Storage\StorageInterface;
 use Lombervid\ShoppingCart\ShoppingCart;
 use Lombervid\ShoppingCart\Item;
 use PHPUnit\Framework\Attributes\Depends;
 
 class ShoppingCartTest extends TestCase
 {
-    private SessionStorageInterface $storage;
+    private StorageInterface $storage;
     private ShoppingCart $cart;
 
     public function testThereAreNoItemsWhenCartIsCreated(): void
@@ -153,7 +153,7 @@ class ShoppingCartTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->storage = $this->createMock(SessionStorageInterface::class);
+        $this->storage = $this->createMock(StorageInterface::class);
         $this->cart = new ShoppingCart(storage: $this->storage);
     }
 }
