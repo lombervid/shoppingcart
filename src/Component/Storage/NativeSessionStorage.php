@@ -30,9 +30,9 @@ class NativeSessionStorage implements StorageInterface
         $_SESSION[$name] = $value;
     }
 
-    public function get(string $name): string
+    public function get(string $name, mixed $default = ''): mixed
     {
-        return $_SESSION[$name] ?? '';
+        return $_SESSION[$name] ?? $default;
     }
 
     public function remove(string $name): void
