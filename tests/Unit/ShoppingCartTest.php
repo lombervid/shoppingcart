@@ -107,7 +107,7 @@ class ShoppingCartTest extends TestCase
     }
 
     #[Depends('testNoShippingCostWhenCartIsEmpty')]
-    public function testShipping($cart): void
+    public function testShipping(ShoppingCart $cart): void
     {
         $cart->add(new Item('25', 'Item', 100));
         $this->assertSame(250.0, $cart->total());
@@ -149,6 +149,61 @@ class ShoppingCartTest extends TestCase
 
         $cart->add(new Item('15', 'Item', 600));
         $this->assertSame(805.00, $cart->total());
+    }
+
+    public function testToArray(): void
+    {
+        $items = [
+            md5('15') => [
+                'id'       => '15',
+                'name'     => 'My Item',
+                'price'    => 50,
+                'qty'      => 3,
+                'discount' => 0,
+                'fields'   => [],
+            ],
+            md5('3456') => [
+                'id'       => '3456',
+                'name'     => 'My Item 2',
+                'price'    => 150.25,
+                'qty'      => 1,
+                'discount' => 0,
+                'fields'   => [],
+            ],
+            md5('2456') => [
+                'id'       => '2456',
+                'name'     => 'My Item 3',
+                'price'    => 75.0,
+                'qty'      => 2,
+                'discount' => 0,
+                'fields'   => ['size' => 'M'],
+            ],
+            md5('8906') => [
+                'id'       => '8906',
+                'name'     => 'My Item 4',
+                'price'    => 10.36,
+                'qty'      => 1,
+                'discount' => 5.12,
+                'fields'   => [],
+            ],
+        ];
+
+        $cart = new ShoppingCart(storage: $this->storage);
+        $this->assertEquals([], $cart->toArray());
+
+        foreach (
+            $items as [
+                'id' => $id,
+                'name' => $name,
+                'price' => $price,
+                'qty' => $qty,
+                'discount' => $discount,
+                'fields' => $fields
+            ]
+        ) {
+            $cart->add(new Item($id, $name, $price, $qty, $fields, $discount));
+        }
+        $this->assertEquals($items, $cart->toArray());
     }
 
     protected function setUp(): void
