@@ -15,7 +15,7 @@ namespace Lombervid\ShoppingCart;
 
 use Lombervid\ShoppingCart\Component\Storage\NativeSessionStorage;
 use Lombervid\ShoppingCart\Component\Storage\StorageInterface;
-use Lombervid\ShoppingCart\Support\Arr;
+use Lombervid\ShoppingCart\Component\Support\Arr;
 
 /**
  * ShoppingCart Class

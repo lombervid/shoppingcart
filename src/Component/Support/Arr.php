@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Lombervid\ShoppingCart\Support;
+namespace Lombervid\ShoppingCart\Component\Support;
 
 class Arr
 {
