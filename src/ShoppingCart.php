@@ -293,10 +293,10 @@ class ShoppingCart
                 $this->add(new Item(
                     Arr::get($item, 'id'),
                     Arr::get($item, 'name'),
-                    Arr::get($item, 'price'),
+                    Arr::get($item, 'price', empty: false),
                     Arr::get($item, 'qty'),
                     Arr::get($item, 'fields', [], 'array'),
-                    Arr::get($item, 'discount')
+                    Arr::get($item, 'discount', empty: false)
                 ));
             }
         }
