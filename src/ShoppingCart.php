@@ -244,7 +244,6 @@ class ShoppingCart
      *
      * @return array List of items as array
      */
-    // TODO add test
     public function toArray(): array
     {
         return array_map(fn($item) => $item->toArray(), $this->items);
