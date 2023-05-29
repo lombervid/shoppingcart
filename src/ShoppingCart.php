@@ -236,7 +236,7 @@ class ShoppingCart
      */
     public function save(): void
     {
-        $this->storage->set($this->getOption('name'), $this->itemsToArray());
+        $this->storage->set($this->getOption('name'), $this->toArray());
     }
 
     /**
@@ -245,11 +245,9 @@ class ShoppingCart
      * @return array List of items as array
      */
     // TODO add test
-    protected function itemsToArray(): array
+    public function toArray(): array
     {
-        return array_map(function ($item) {
-            return $item->toArray();
-        }, $this->items);
+        return array_map(fn($item) => $item->toArray(), $this->items);
     }
 
     /**
