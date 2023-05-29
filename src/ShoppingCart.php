@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Lombervid\ShoppingCart;
 
+use Lombervid\ShoppingCart\Component\Storage\NativeSessionStorage;
 use Lombervid\ShoppingCart\Component\Storage\StorageInterface;
 use Lombervid\ShoppingCart\Support\Arr;
 
@@ -59,7 +60,7 @@ class ShoppingCart
     public function __construct(array $options = [], StorageInterface $storage = null)
     {
         $this->items   = [];
-        $this->storage = $storage ?: new StorageInterface();
+        $this->storage = $storage ?: new NativeSessionStorage();
         $this->options = $this->filterOptions($options);
         $this->load();
     }
