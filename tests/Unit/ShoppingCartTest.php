@@ -190,7 +190,7 @@ class ShoppingCartTest extends TestCase
     protected function items(): array
     {
         return [
-            md5('15') => [
+            '15' => [
                 'id'       => '15',
                 'name'     => 'My Item',
                 'price'    => 50,
@@ -198,7 +198,7 @@ class ShoppingCartTest extends TestCase
                 'discount' => 0,
                 'fields'   => [],
             ],
-            md5('3456') => [
+            '3456' => [
                 'id'       => '3456',
                 'name'     => 'My Item 2',
                 'price'    => 150.25,
@@ -206,7 +206,7 @@ class ShoppingCartTest extends TestCase
                 'discount' => 0,
                 'fields'   => [],
             ],
-            md5('2456') => [
+            '2456' => [
                 'id'       => '2456',
                 'name'     => 'My Item 3',
                 'price'    => 75.0,
@@ -214,7 +214,7 @@ class ShoppingCartTest extends TestCase
                 'discount' => 0,
                 'fields'   => ['size' => 'M'],
             ],
-            md5('8906') => [
+            '8906' => [
                 'id'       => '8906',
                 'name'     => 'My Item 4',
                 'price'    => 10.36,
@@ -222,7 +222,7 @@ class ShoppingCartTest extends TestCase
                 'discount' => 5.12,
                 'fields'   => [],
             ],
-            md5('4567') => [
+            '4567' => [
                 'id'       => '4567',
                 'name'     => 'My Item 5',
                 'price'    => 0,
