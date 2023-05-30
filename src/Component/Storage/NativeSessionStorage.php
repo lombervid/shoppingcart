@@ -44,6 +44,6 @@ class NativeSessionStorage implements StorageInterface
 
     public function clear(): void
     {
-        unset($_SESSION);
+        $_SESSION = [];
     }
 }
