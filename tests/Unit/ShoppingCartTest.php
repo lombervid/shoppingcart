@@ -156,7 +156,7 @@ class ShoppingCartTest extends TestCase
         $items = $this->items();
 
         $cart = new ShoppingCart(storage: $this->storage);
-        $this->assertEquals([], $cart->toArray());
+        $this->assertSame([], $cart->toArray());
 
         foreach (
             $items as [
@@ -170,7 +170,7 @@ class ShoppingCartTest extends TestCase
         ) {
             $cart->add(new Item($id, $name, $price, $qty, $fields, $discount));
         }
-        $this->assertEquals($items, $cart->toArray());
+        $this->assertSame($items, $cart->toArray());
     }
 
     public function testLoadCartFromStorage()
@@ -184,7 +184,7 @@ class ShoppingCartTest extends TestCase
             ->willReturn($items);
 
         $cart = new ShoppingCart(storage: $this->storage);
-        $this->assertEquals($items, $cart->toArray());
+        $this->assertSame($items, $cart->toArray());
     }
 
     protected function items(): array
@@ -193,9 +193,9 @@ class ShoppingCartTest extends TestCase
             '15' => [
                 'id'       => '15',
                 'name'     => 'My Item',
-                'price'    => 50,
+                'price'    => 50.0,
                 'qty'      => 3,
-                'discount' => 0,
+                'discount' => 0.0,
                 'fields'   => [],
             ],
             '3456' => [
@@ -203,7 +203,7 @@ class ShoppingCartTest extends TestCase
                 'name'     => 'My Item 2',
                 'price'    => 150.25,
                 'qty'      => 1,
-                'discount' => 0,
+                'discount' => 0.0,
                 'fields'   => [],
             ],
             '2456' => [
@@ -211,7 +211,7 @@ class ShoppingCartTest extends TestCase
                 'name'     => 'My Item 3',
                 'price'    => 75.0,
                 'qty'      => 2,
-                'discount' => 0,
+                'discount' => 0.0,
                 'fields'   => ['size' => 'M'],
             ],
             '8906' => [
@@ -225,9 +225,9 @@ class ShoppingCartTest extends TestCase
             '4567' => [
                 'id'       => '4567',
                 'name'     => 'My Item 5',
-                'price'    => 0,
+                'price'    => 0.0,
                 'qty'      => 1,
-                'discount' => 0,
+                'discount' => 0.0,
                 'fields'   => [],
             ],
         ];
