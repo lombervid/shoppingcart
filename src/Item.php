@@ -15,15 +15,15 @@ class Item
         private float $discount = 0,
     ) {
         if ($price < 0) {
-            throw new \InvalidArgumentException("Price must to be greater than or equal to zero");
+            throw new \InvalidArgumentException('Price must to be greater than or equal to zero');
         }
 
         if ($qty <= 0) {
-            throw new \InvalidArgumentException("Quantity must be greater than zero");
+            throw new \InvalidArgumentException('Quantity must be greater than zero');
         }
 
         if ($discount < 0) {
-            throw new \InvalidArgumentException("Discount must be greater than or equal to zero");
+            throw new \InvalidArgumentException('Discount must be greater than or equal to zero');
         }
     }
 
