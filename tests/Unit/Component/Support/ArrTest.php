@@ -68,32 +68,32 @@ class ArrTest extends TestCase
     }
 
     #[DataProvider('intersectKeyRecursiveProvider')]
-    public function testIntersectKeyRecursive(array $options, array $expected)
+    public function testIntersectKeyRecursive(array $options, array $expected): void
     {
         $this->assertSame($expected, Arr::intersectKeyRecursive($options, self::$defaultOptions));
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $this->assertSame(true, Arr::get(self::$defaultArray, 'autosave'));
     }
 
-    public function testGetReturnsDefaultWhenZeroValue()
+    public function testGetReturnsDefaultWhenZeroValue(): void
     {
         $this->assertSame(null, Arr::get(self::$defaultArray, 'tax'));
     }
 
-    public function testGetCheckOnlyIfKeyExists()
+    public function testGetCheckOnlyIfKeyExists(): void
     {
         $this->assertSame(0, Arr::get(self::$defaultArray, 'tax', empty: false));
     }
 
-    public function testGetDefaultValue()
+    public function testGetDefaultValue(): void
     {
         $this->assertSame('default_value', Arr::get(self::$defaultArray, 'missing', default: 'default_value'));
     }
 
-    public function testGetCheckValueType()
+    public function testGetCheckValueType(): void
     {
         $this->assertSame(
             null,
@@ -106,7 +106,7 @@ class ArrTest extends TestCase
         );
     }
 
-    public function testGetCheckMultipleValueTypes()
+    public function testGetCheckMultipleValueTypes(): void
     {
         $this->assertSame(
             0,
