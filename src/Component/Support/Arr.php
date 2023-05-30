@@ -19,13 +19,21 @@ class Arr
         $array1 = array_intersect_key($array1, $array2);
 
         foreach ($array1 as $key => &$value) {
-            if (is_array($array2[$key])) {
-                if (is_array($value)) {
-                    $value = static::intersectKeyRecursive($value, $array2[$key]);
-                } else {
-                    unset($array1[$key]);
-                }
+            if (is_numeric($array2[$key]) && is_numeric($value)) {
+                $array1[$key] = floatval($value);
+                continue;
             }
+
+            if (gettype($array2[$key]) !== gettype($value)) {
+                unset($array1[$key]);
+                continue;
+            }
+
+            if (!is_array($array2[$key])) {
+                continue;
+            }
+
+            $value = static::intersectKeyRecursive($value, $array2[$key]);
         }
 
         return $array1;
