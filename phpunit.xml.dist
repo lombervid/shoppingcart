@@ -6,6 +6,7 @@
   bootstrap="vendor/autoload.php"
   colors="true"
   testdox="true"
+  displayDetailsOnTestsThatTriggerWarnings="true"
   failOnDeprecation="true"
   failOnNotice="true"
   failOnWarning="true"
