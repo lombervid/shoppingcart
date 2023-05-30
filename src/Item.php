@@ -14,6 +14,14 @@ class Item
         private array $fields = [],
         private float $discount = 0,
     ) {
+        if ($id === '') {
+            throw new \InvalidArgumentException('ID must not be empty');
+        }
+
+        if ($name === '') {
+            throw new \InvalidArgumentException('Name must not be empty');
+        }
+
         if ($price < 0) {
             throw new \InvalidArgumentException('Price must to be greater than or equal to zero');
         }
