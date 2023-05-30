@@ -83,16 +83,17 @@ class ShoppingCart
      */
     public function add(Item $item, bool $append = true): void
     {
-        $itemID = md5($item->get('id'));
+        $id = $item->get('id');
 
-        if ($this->inCart($itemID)) {
-            if ($append) {
-                $this->items[$itemID]->add($item->get('qty'));
-            } else {
-                $this->items[$itemID]->update($item->get('qty'));
-            }
+        if (!$this->inCart($id)) {
+            $this->items[$id] = $item;
+            return;
+        }
+
+        if ($append) {
+            $this->items[$id]->add($item->get('qty'));
         } else {
-            $this->items[$itemID] = $item;
+            $this->items[$id]->update($item->get('qty'));
         }
     }
 
@@ -103,14 +104,13 @@ class ShoppingCart
      */
     public function remove(string $id): bool
     {
-        $itemID = md5($id);
-
-        if ($this->inCart($itemID)) {
-            unset($this->items[$itemID]);
-            return true;
+        if (!$this->inCart($id)) {
+            return false;
         }
 
-        return false;
+        unset($this->items[$id]);
+
+        return true;
     }
 
     /**
@@ -180,13 +180,10 @@ class ShoppingCart
      * Checks if item exists in cart
      *
      * @param string $id Item ID to find
-     * @param bool $encrypted If ID is already encrypted
      */
-    public function inCart(string $id, bool $encrypted = true): bool
+    public function inCart(string $id): bool
     {
-        $itemID = $encrypted ? $id : md5($id);
-
-        return array_key_exists($itemID, $this->items);
+        return array_key_exists($id, $this->items);
     }
 
     /**
