@@ -283,7 +283,6 @@ class ShoppingCart
     /**
      * Load the items from session
      */
-    // TODO add test
     protected function load(): void
     {
         $items = $this->storage->get($this->getOption('name'));
