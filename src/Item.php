@@ -58,6 +58,11 @@ class Item
         return '';
     }
 
+    public function __get(string $name): mixed
+    {
+        return $this->get($name);
+    }
+
     public function hasDiscount(): bool
     {
         return (0 < $this->discount);
