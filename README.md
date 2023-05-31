@@ -136,5 +136,4 @@ $shoppingCart->clean();
 
 ## Contributing
 
-We accept contributions via GitHub Pull Requests, but all contributors need to
-be covered by the standard.
+Refer to [CONTRIBUTING](./.github/CONTRIBUTING.md) for information.
