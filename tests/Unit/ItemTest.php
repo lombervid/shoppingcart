@@ -141,6 +141,18 @@ class ItemTest extends TestCase
         $this->assertSame('', $item->get('invalid'));
     }
 
+    #[DependsUsingDeepClone('testToArrayMethodWithExtraArguments')]
+    public function testAccessPropertiesAndFieldsAsPublicObjectProperties(Item $item): void
+    {
+        $this->assertSame('100', $item->id);
+        $this->assertSame('New Item', $item->name);
+        $this->assertSame(68.5, $item->price);
+        $this->assertSame(2, $item->qty);
+        $this->assertSame(15.0, $item->discount);
+        $this->assertSame('New item from collection', $item->description);
+        $this->assertSame('', $item->invalid);
+    }
+
     public function testExceptionIsThrownForEmptyId()
     {
         $this->expectException(\InvalidArgumentException::class);
