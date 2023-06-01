@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [3.0.0]
 
 ### Added
 
@@ -21,4 +21,5 @@
 - **Breaking:** remove `coupon` property
 - **Breaking:** remove `SymfonySessionStorage` storage
 
-[Unreleased]: https://github.com/lombervid/shoppingcart/compare/v1.0...dev-v3.0
+[Unreleased]: https://github.com/lombervid/shoppingcart/compare/v1.0...main
+[3.0.0]: https://github.com/lombervid/shoppingcart/compare/v1.0...v3.0.0
