@@ -17,15 +17,8 @@ use Lombervid\ShoppingCart\Component\Storage\NativeSessionStorage;
 use Lombervid\ShoppingCart\Component\Storage\StorageInterface;
 use Lombervid\ShoppingCart\Component\Support\Arr;
 
-/**
- * ShoppingCart Class
- * @version 3.0
- */
 class ShoppingCart
 {
-    /**
-     * @const string Version of this library.
-     */
     final public const VERSION = '3.0';
 
     /**

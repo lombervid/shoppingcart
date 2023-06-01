@@ -3,7 +3,7 @@
     "type": "library",
     "description": "A simple shopping cart class for PHP",
     "keywords": [
-        "shoppingcart"
+        "shopping cart"
     ],
     "homepage": "https://github.com/lombervid/shoppingcart",
     "license": "MIT",
