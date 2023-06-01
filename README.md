@@ -200,15 +200,15 @@ It is an `array` of options. The default value is:
 
 #### Methods
 
-| Name                       | Description                         |
-| :------------------------- | ----------------------------------- |
-| `add(int $qty): void`      | Increase item's quantity by `$qty`  |
-| `update(int $qty): void`   | Update item's quantity to `$qty`    |
-| `get(string $name): mixed` | Get `$name` property or extra field |
-| `hasDiscount(): bool`      | Check if has a discount             |
-| `price(): float`           | Get item's price                    |
-| `total(): float`           | Get total                           |
-| `toArray(): array`         | Return item as `array`              |
+| Name                                              | Description                        |
+| :------------------------------------------------ | ---------------------------------- |
+| `add(int $qty): void`                             | Increase item's quantity by `$qty` |
+| `update(int $qty): void`                          | Update item's quantity to `$qty`   |
+| `get(string $name, mixed $default = null): mixed` | Get `$name` property/field         |
+| `hasDiscount(): bool`                             | Check if has a discount            |
+| `price(): float`                                  | Get item's price                   |
+| `total(): float`                                  | Get total                          |
+| `toArray(): array`                                | Return item as `array`             |
 
 ## Contributing
 

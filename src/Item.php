@@ -45,7 +45,7 @@ class Item
         $this->qty = $qty;
     }
 
-    public function get(string $name): mixed
+    public function get(string $name, mixed $default = null): mixed
     {
         if ('fields' != $name && property_exists($this, $name)) {
             return $this->{$name};
@@ -55,7 +55,7 @@ class Item
             return $this->fields[$name];
         }
 
-        return '';
+        return $default;
     }
 
     public function __get(string $name): mixed
