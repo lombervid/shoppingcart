@@ -4,9 +4,11 @@
 
 ### Added
 
-- Add unit tests
-- Add composer support
 - Add CHANGELOG file
+- Add composer support
+- Add unit tests
+- Add support to access item's properties/fields with `$item->property` syntax
+- Add support for default value on `Item::get()` method
 
 ### Changed
 

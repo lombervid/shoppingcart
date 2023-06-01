@@ -136,9 +136,10 @@ class ItemTest extends TestCase
     }
 
     #[DependsUsingDeepClone('testToArrayMethodWithExtraArguments')]
-    public function testEmptyStringOnInvalidField(Item $item): void
+    public function testDefaultValueOnInvalidField(Item $item): void
     {
-        $this->assertSame('', $item->get('invalid'));
+        $this->assertSame(null, $item->get('invalid'));
+        $this->assertSame('some_Value', $item->get('invalid', 'some_Value'));
     }
 
     #[DependsUsingDeepClone('testToArrayMethodWithExtraArguments')]
@@ -150,7 +151,7 @@ class ItemTest extends TestCase
         $this->assertSame(2, $item->qty);
         $this->assertSame(15.0, $item->discount);
         $this->assertSame('New item from collection', $item->description);
-        $this->assertSame('', $item->invalid);
+        $this->assertSame(null, $item->invalid);
     }
 
     public function testExceptionIsThrownForEmptyId()
