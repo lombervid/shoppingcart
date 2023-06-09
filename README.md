@@ -29,7 +29,7 @@ Create an instance of `ShoppingCart` class.
 ```php
 use Lombervid\ShoppingCart\ShoppingCart;
 
-$shoppingCart = new \ShoppingCart\ShoppingCart();
+$shoppingCart = new ShoppingCart();
 ```
 
 ### Add items
