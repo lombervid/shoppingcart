@@ -12,6 +12,10 @@ use PHPUnit\Framework\Attributes\Depends;
 
 class ShoppingCartTest extends TestCase
 {
+
+    /**
+     * @var StorageInterface&\PHPUnit\Framework\MockObject\MockObject $storage
+     * */
     private StorageInterface $storage;
     private ShoppingCart $cart;
 

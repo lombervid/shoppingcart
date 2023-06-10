@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Lombervid\ShoppingCart;
 
+/**
+ * @property-read string $id
+ * @property-read string $name
+ * @property-read float $price
+ * @property-read int $qty
+ * @property-read float $discount
+ * @mixin mixed
+ */
 class Item
 {
     public function __construct(
