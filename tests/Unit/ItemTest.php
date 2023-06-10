@@ -154,13 +154,13 @@ class ItemTest extends TestCase
         $this->assertSame(null, $item->invalid);
     }
 
-    public function testExceptionIsThrownForEmptyId()
+    public function testExceptionIsThrownForEmptyId(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Item('', 'Item', 1125);
     }
 
-    public function testExceptionIsThrownForEmptyName()
+    public function testExceptionIsThrownForEmptyName(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Item('34', '', 1125);

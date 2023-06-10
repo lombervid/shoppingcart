@@ -1,5 +1,9 @@
 parameters:
-    level: 2
+    level: 6
     paths:
         - src
         - tests
+    typeAliases:
+        TCartOptions: 'array{name: string, autosave: bool, tax: float, shipping: array{amount: float, free: float}}'
+        TOptions: 'array{name?: string, autosave?: bool, tax?: float, shipping?: array{amount?: float, free?: float}}'
+        TItemArray: 'array{id: string, name: string, price: float, qty: int, discount: float, fields: array<string, mixed>}'

@@ -14,6 +14,9 @@ namespace Lombervid\ShoppingCart;
  */
 class Item
 {
+    /**
+     * @phpstan-param array<string, mixed> $fields
+     */
     public function __construct(
         private string $id,
         private string $name,
@@ -86,6 +89,9 @@ class Item
         return $this->price() * $this->qty;
     }
 
+    /**
+     * @phpstan-return TItemArray
+     */
     public function toArray(): array
     {
         return [

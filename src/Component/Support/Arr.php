@@ -9,10 +9,10 @@ class Arr
     /**
      * Recursively computes the intersection of arrays using keys for comparison.
      *
-     * @param   array $array1 The array with master keys to check.
-     * @param   array $array2 An array to compare keys against.
+     * @param   mixed[] $array1 The array with master keys to check.
+     * @param   mixed[] $array2 An array to compare keys against.
      *
-     * @return  array associative array containing all the entries of array1 which have keys that are present in array2.
+     * @return  mixed[] associative array containing all the entries of array1 which have keys that are present in array2.
      **/
     public static function intersectKeyRecursive(array $array1, array $array2): array
     {
@@ -42,11 +42,11 @@ class Arr
     /**
      * Get value from array
      *
-     * @param  array        $arr        Array to look for
-     * @param  int|string   $key        Position to look for
-     * @param  mixed        $default    Default Value
-     * @param  string|array $type       Expected type of the value (a gettype() valid value)
-     * @param  bool         $empty      Determine whitch function use (isset/empty)
+     * @param  mixed[]         $arr        Array to look for
+     * @param  int|string      $key        Position to look for
+     * @param  mixed           $default    Default Value
+     * @param  string|string[] $type       Expected type of the value (a gettype() valid value)
+     * @param  bool            $empty      Determine whitch function use (isset/empty)
      *
      * @return mixed of the position or $default value
      */

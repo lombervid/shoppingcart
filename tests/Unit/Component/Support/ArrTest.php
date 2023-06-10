@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class ArrTest extends TestCase
 {
+    /** @phpstan-var TCartOptions */
     protected static $defaultOptions = [
         'name'     => 'shopping_cart',
         'autosave' => true,
@@ -20,6 +21,7 @@ class ArrTest extends TestCase
         ],
     ];
 
+    /** @phpstan-var TCartOptions */
     protected static $defaultArray = [
         'name'     => 'shopping_cart',
         'autosave' => true,
@@ -32,6 +34,9 @@ class ArrTest extends TestCase
         ],
     ];
 
+    /**
+     * @phpstan-return array<string, array{mixed[], TOptions}>
+     */
     public static function intersectKeyRecursiveProvider(): array
     {
         return [
@@ -67,6 +72,10 @@ class ArrTest extends TestCase
         ];
     }
 
+    /**
+     * @phpstan-param TOptions $options
+     * @phpstan-param TOptions $expected
+     */
     #[DataProvider('intersectKeyRecursiveProvider')]
     public function testIntersectKeyRecursive(array $options, array $expected): void
     {

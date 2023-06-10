@@ -9,14 +9,11 @@ use Lombervid\ShoppingCart\Component\Storage\StorageInterface;
 use Lombervid\ShoppingCart\ShoppingCart;
 use Lombervid\ShoppingCart\Item;
 use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class ShoppingCartTest extends TestCase
 {
-
-    /**
-     * @var StorageInterface&\PHPUnit\Framework\MockObject\MockObject $storage
-     * */
-    private StorageInterface $storage;
+    private StorageInterface&MockObject $storage;
     private ShoppingCart $cart;
 
     public function testThereAreNoItemsWhenCartIsCreated(): void
@@ -177,7 +174,7 @@ class ShoppingCartTest extends TestCase
         $this->assertSame($items, $cart->toArray());
     }
 
-    public function testLoadCartFromStorage()
+    public function testLoadCartFromStorage(): void
     {
         $items = $this->items();
         $this
@@ -191,6 +188,9 @@ class ShoppingCartTest extends TestCase
         $this->assertSame($items, $cart->toArray());
     }
 
+    /**
+     * @phpstan-return array<TItemArray>
+     */
     protected function items(): array
     {
         return [

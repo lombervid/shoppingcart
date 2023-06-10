@@ -31,9 +31,7 @@ class ShoppingCart
      */
     protected StorageInterface $storage;
 
-    /**
-     * @var array Cart options.
-     */
+    /** @phpstan-var TCartOptions */
     protected array $options = [
         'name'     => 'shopping_cart',
         'autosave' => true,
@@ -47,6 +45,7 @@ class ShoppingCart
     /**
      * Constructor.
      *
+     * @phpstan-param TOptions $options
      * @param array $options Cart options.
      * @param StorageInterface $storage Cart storage.
      */
@@ -232,6 +231,7 @@ class ShoppingCart
     /**
      * Return a list of items as array
      *
+     * @phpstan-return array<TItemArray>
      * @return array List of items as array
      */
     public function toArray(): array
@@ -242,6 +242,8 @@ class ShoppingCart
     /**
      * Filter the cart options
      *
+     * @phpstan-param TOptions $options
+     * @phpstan-return TCartOptions
      * @param array $options Cart options
      *
      * @return array Filtered options
