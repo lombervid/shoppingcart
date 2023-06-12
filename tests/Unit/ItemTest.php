@@ -61,21 +61,21 @@ class ItemTest extends TestCase
     public function testNoDiscount(): void
     {
         $item = new Item('1', 'Item', 15);
-        $this->assertSame(false, $item->hasDiscount());
+        $this->assertFalse($item->hasDiscount());
         $this->assertSame(15.0, $item->total());
     }
 
     public function testDiscountApplies(): void
     {
         $item = new Item('1', 'Item', 15, discount: 10);
-        $this->assertSame(true, $item->hasDiscount());
+        $this->assertTrue($item->hasDiscount());
         $this->assertSame(5.0, $item->total());
     }
 
     public function testDiscountAppliesWithQuantity(): void
     {
         $item = new Item('1', 'Item', 15, 3, discount: 10);
-        $this->assertSame(true, $item->hasDiscount());
+        $this->assertTrue($item->hasDiscount());
         $this->assertSame(15.0, $item->total());
     }
 
@@ -138,7 +138,7 @@ class ItemTest extends TestCase
     #[DependsUsingDeepClone('testToArrayMethodWithExtraArguments')]
     public function testDefaultValueOnInvalidField(Item $item): void
     {
-        $this->assertSame(null, $item->get('invalid'));
+        $this->assertNull($item->get('invalid'));
         $this->assertSame('some_Value', $item->get('invalid', 'some_Value'));
     }
 
@@ -151,7 +151,7 @@ class ItemTest extends TestCase
         $this->assertSame(2, $item->qty);
         $this->assertSame(15.0, $item->discount);
         $this->assertSame('New item from collection', $item->description);
-        $this->assertSame(null, $item->invalid);
+        $this->assertNull($item->invalid);
     }
 
     public function testExceptionIsThrownForEmptyId(): void

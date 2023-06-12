@@ -84,12 +84,12 @@ class ArrTest extends TestCase
 
     public function testGet(): void
     {
-        $this->assertSame(true, Arr::get(self::$defaultArray, 'autosave'));
+        $this->assertTrue(Arr::get(self::$defaultArray, 'autosave'));
     }
 
     public function testGetReturnsDefaultWhenZeroValue(): void
     {
-        $this->assertSame(null, Arr::get(self::$defaultArray, 'tax'));
+        $this->assertNull(Arr::get(self::$defaultArray, 'tax'));
     }
 
     public function testGetCheckOnlyIfKeyExists(): void
@@ -104,10 +104,7 @@ class ArrTest extends TestCase
 
     public function testGetCheckValueType(): void
     {
-        $this->assertSame(
-            null,
-            Arr::get(self::$defaultArray, 'fields', type: 'array'),
-        );
+        $this->assertNull(Arr::get(self::$defaultArray, 'fields', type: 'array'));
 
         $this->assertSame(
             ['amount' => 50, 'free'   => 500],
