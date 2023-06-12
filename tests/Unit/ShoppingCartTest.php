@@ -18,16 +18,16 @@ class ShoppingCartTest extends TestCase
 
     public function testThereAreNoItemsWhenCartIsCreated(): void
     {
-        $this->assertSame([], $this->cart->items());
-        $this->assertSame(0, $this->cart->totalItems());
-        $this->assertTrue($this->cart->isEmpty());
+        self::assertSame([], $this->cart->items());
+        self::assertSame(0, $this->cart->totalItems());
+        self::assertTrue($this->cart->isEmpty());
     }
 
     public function testNoShippingCostWhenCartIsEmpty(): ShoppingCart
     {
         $options = ['shipping' => ['amount' => 150]];
         $cart = new ShoppingCart($options, $this->storage);
-        $this->assertSame(0.0, $cart->total());
+        self::assertSame(0.0, $cart->total());
 
         return $cart;
     }
@@ -35,7 +35,7 @@ class ShoppingCartTest extends TestCase
     public function testAddItem(): ShoppingCart
     {
         $this->cart->add(new Item('15', 'Item', 50.5));
-        $this->assertSame(1, $this->cart->totalItems());
+        self::assertSame(1, $this->cart->totalItems());
 
         return $this->cart;
     }
@@ -44,8 +44,8 @@ class ShoppingCartTest extends TestCase
     public function testItemAlreadyInCartIsAddedCorrectly(ShoppingCart $cart): ShoppingCart
     {
         $cart->add(new Item('15', 'Item', 50.5));
-        $this->assertSame(1, $cart->totalItems());
-        $this->assertSame(101.0, $cart->total());
+        self::assertSame(1, $cart->totalItems());
+        self::assertSame(101.0, $cart->total());
 
         return $cart;
     }
@@ -54,8 +54,8 @@ class ShoppingCartTest extends TestCase
     public function testNewItemIsAddedCorrectly(ShoppingCart $cart): ShoppingCart
     {
         $cart->add(new Item('25', 'Item 2', 100));
-        $this->assertSame(2, $cart->totalItems());
-        $this->assertSame(201.0, $cart->total());
+        self::assertSame(2, $cart->totalItems());
+        self::assertSame(201.0, $cart->total());
 
         return $cart;
     }
@@ -64,7 +64,7 @@ class ShoppingCartTest extends TestCase
     public function testAddItemAlreadyInCartReplacingQuantity(ShoppingCart $cart): ShoppingCart
     {
         $cart->add(new Item('15', 'Item', 50.5), false);
-        $this->assertSame(150.5, $cart->total());
+        self::assertSame(150.5, $cart->total());
 
         return $cart;
     }
@@ -73,7 +73,7 @@ class ShoppingCartTest extends TestCase
     public function testAddingItemAlreadyInCartKeepsOriginalPrice(ShoppingCart $cart): ShoppingCart
     {
         $cart->add(new Item('15', 'Item', 1500));
-        $this->assertSame(201.0, $cart->total());
+        self::assertSame(201.0, $cart->total());
 
         return $cart;
     }
@@ -82,8 +82,8 @@ class ShoppingCartTest extends TestCase
     public function testRemoveItem(ShoppingCart $cart): ShoppingCart
     {
         $cart->remove('15');
-        $this->assertSame(1, $cart->totalItems());
-        $this->assertSame(100.0, $cart->total());
+        self::assertSame(1, $cart->totalItems());
+        self::assertSame(100.0, $cart->total());
 
         return $cart;
     }
@@ -91,27 +91,27 @@ class ShoppingCartTest extends TestCase
     #[Depends('testRemoveItem')]
     public function testClearCart(ShoppingCart $cart): void
     {
-        $this->assertSame(1, $cart->totalItems());
-        $this->assertSame(100.0, $cart->total());
+        self::assertSame(1, $cart->totalItems());
+        self::assertSame(100.0, $cart->total());
 
         $cart->clear();
-        $this->assertSame([], $cart->items());
-        $this->assertSame(0, $cart->totalItems());
-        $this->assertSame(0.0, $cart->total());
+        self::assertSame([], $cart->items());
+        self::assertSame(0, $cart->totalItems());
+        self::assertSame(0.0, $cart->total());
     }
 
     public function testTax(): void
     {
         $cart = new ShoppingCart(['tax' => 15], $this->storage);
         $cart->add(new Item('25', 'Item', 100));
-        $this->assertSame(115.0, $cart->total());
+        self::assertSame(115.0, $cart->total());
     }
 
     #[Depends('testNoShippingCostWhenCartIsEmpty')]
     public function testShipping(ShoppingCart $cart): void
     {
         $cart->add(new Item('25', 'Item', 100));
-        $this->assertSame(250.0, $cart->total());
+        self::assertSame(250.0, $cart->total());
     }
 
     public function testFreeShippingAfterCertainAmount(): void
@@ -125,13 +125,13 @@ class ShoppingCartTest extends TestCase
 
         $cart = new ShoppingCart($options, $this->storage);
         $cart->add(new Item('25', 'Item', 100));
-        $this->assertSame(250.0, $cart->total());
+        self::assertSame(250.0, $cart->total());
 
         $cart->add(new Item('15', 'Item', 399));
-        $this->assertSame(649.0, $cart->total());
+        self::assertSame(649.0, $cart->total());
 
         $cart->add(new Item('13', 'Item', 1));
-        $this->assertSame(500.0, $cart->total());
+        self::assertSame(500.0, $cart->total());
     }
 
     public function testShippingAndTaxt(): void
@@ -146,10 +146,10 @@ class ShoppingCartTest extends TestCase
 
         $cart = new ShoppingCart($options, $this->storage);
         $cart->add(new Item('25', 'Item', 100));
-        $this->assertSame(287.5, $cart->total());
+        self::assertSame(287.5, $cart->total());
 
         $cart->add(new Item('15', 'Item', 600));
-        $this->assertSame(805.00, $cart->total());
+        self::assertSame(805.00, $cart->total());
     }
 
     public function testToArray(): void
@@ -157,7 +157,7 @@ class ShoppingCartTest extends TestCase
         $items = $this->items();
 
         $cart = new ShoppingCart(storage: $this->storage);
-        $this->assertSame([], $cart->toArray());
+        self::assertSame([], $cart->toArray());
 
         foreach (
             $items as [
@@ -171,7 +171,7 @@ class ShoppingCartTest extends TestCase
         ) {
             $cart->add(new Item($id, $name, $price, $qty, $fields, $discount));
         }
-        $this->assertSame($items, $cart->toArray());
+        self::assertSame($items, $cart->toArray());
     }
 
     public function testLoadCartFromStorage(): void
@@ -179,13 +179,13 @@ class ShoppingCartTest extends TestCase
         $items = $this->items();
         $this
             ->storage
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('get')
-            ->with($this->identicalTo('shopping_cart'))
+            ->with(self::identicalTo('shopping_cart'))
             ->willReturn($items);
 
         $cart = new ShoppingCart(storage: $this->storage);
-        $this->assertSame($items, $cart->toArray());
+        self::assertSame($items, $cart->toArray());
     }
 
     /**

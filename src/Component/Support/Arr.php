@@ -57,10 +57,6 @@ class Arr
         string|array $type = null,
         bool $empty = true,
     ) {
-        if (!is_array($arr)) {
-            return $default;
-        }
-
         if (!array_key_exists($key, $arr)) {
             return $default;
         }
@@ -71,7 +67,7 @@ class Arr
                     return $default;
                 }
             } elseif (gettype($type) == 'array') {
-                if (!in_array(gettype($arr[$key]), $type)) {
+                if (!in_array(gettype($arr[$key]), $type, true)) {
                     return $default;
                 }
             }

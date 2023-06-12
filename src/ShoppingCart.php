@@ -52,7 +52,7 @@ class ShoppingCart
     public function __construct(array $options = [], StorageInterface $storage = null)
     {
         $this->items   = [];
-        $this->storage = $storage ?: new NativeSessionStorage();
+        $this->storage = $storage ?? new NativeSessionStorage();
         $this->options = $this->filterOptions($options);
         $this->load();
     }
@@ -62,7 +62,7 @@ class ShoppingCart
      */
     public function __destruct()
     {
-        if ($this->getOption('autosave')) {
+        if ($this->getOption('autosave') === true) {
             $this->save();
         }
     }

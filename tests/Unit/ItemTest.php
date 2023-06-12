@@ -14,8 +14,8 @@ class ItemTest extends TestCase
     {
         $item = new Item('1', 'Item', 15);
 
-        $this->assertSame(15.0, $item->price());
-        $this->assertSame(15.0, $item->total());
+        self::assertSame(15.0, $item->price());
+        self::assertSame(15.0, $item->total());
 
         return $item;
     }
@@ -35,48 +35,48 @@ class ItemTest extends TestCase
     #[DependsUsingDeepClone('testSingleItem')]
     public function testAddQuantity(Item $item): void
     {
-        $this->assertSame(15.0, $item->total());
+        self::assertSame(15.0, $item->total());
 
         $item->add(2);
-        $this->assertSame(45.0, $item->total());
+        self::assertSame(45.0, $item->total());
     }
 
     #[DependsUsingDeepClone('testSingleItem')]
     public function testUpdateQuantity(Item $item): void
     {
-        $this->assertSame(15.0, $item->total());
+        self::assertSame(15.0, $item->total());
 
         $item->update(2);
-        $this->assertSame(30.0, $item->total());
+        self::assertSame(30.0, $item->total());
     }
 
     public function testAddingItemWithQuantity(): void
     {
         $item = new Item('1', 'Item', 15, 3);
 
-        $this->assertSame(15.0, $item->price());
-        $this->assertSame(45.0, $item->total());
+        self::assertSame(15.0, $item->price());
+        self::assertSame(45.0, $item->total());
     }
 
     public function testNoDiscount(): void
     {
         $item = new Item('1', 'Item', 15);
-        $this->assertFalse($item->hasDiscount());
-        $this->assertSame(15.0, $item->total());
+        self::assertFalse($item->hasDiscount());
+        self::assertSame(15.0, $item->total());
     }
 
     public function testDiscountApplies(): void
     {
         $item = new Item('1', 'Item', 15, discount: 10);
-        $this->assertTrue($item->hasDiscount());
-        $this->assertSame(5.0, $item->total());
+        self::assertTrue($item->hasDiscount());
+        self::assertSame(5.0, $item->total());
     }
 
     public function testDiscountAppliesWithQuantity(): void
     {
         $item = new Item('1', 'Item', 15, 3, discount: 10);
-        $this->assertTrue($item->hasDiscount());
-        $this->assertSame(15.0, $item->total());
+        self::assertTrue($item->hasDiscount());
+        self::assertSame(15.0, $item->total());
     }
 
     public function testExceptionsAreThrownWithNegativeDiscount(): void
@@ -89,7 +89,7 @@ class ItemTest extends TestCase
     {
         $item = new Item('1', 'Item', 15);
 
-        $this->assertSame([
+        self::assertSame([
             'id' => '1',
             'name' => 'Item',
             'price' => 15.0,
@@ -105,7 +105,7 @@ class ItemTest extends TestCase
             'description' => 'New item from collection',
         ], 15);
 
-        $this->assertSame([
+        self::assertSame([
             'id' => '100',
             'name' => 'New Item',
             'price' => 68.5,
@@ -122,36 +122,36 @@ class ItemTest extends TestCase
     #[DependsUsingDeepClone('testToArrayMethodWithExtraArguments')]
     public function testGetProperties(Item $item): void
     {
-        $this->assertSame('100', $item->get('id'));
-        $this->assertSame('New Item', $item->get('name'));
-        $this->assertSame(68.5, $item->get('price'));
-        $this->assertSame(2, $item->get('qty'));
-        $this->assertSame(15.0, $item->get('discount'));
+        self::assertSame('100', $item->get('id'));
+        self::assertSame('New Item', $item->get('name'));
+        self::assertSame(68.5, $item->get('price'));
+        self::assertSame(2, $item->get('qty'));
+        self::assertSame(15.0, $item->get('discount'));
     }
 
     #[DependsUsingDeepClone('testToArrayMethodWithExtraArguments')]
     public function testGetExtraFields(Item $item): void
     {
-        $this->assertSame('New item from collection', $item->get('description'));
+        self::assertSame('New item from collection', $item->get('description'));
     }
 
     #[DependsUsingDeepClone('testToArrayMethodWithExtraArguments')]
     public function testDefaultValueOnInvalidField(Item $item): void
     {
-        $this->assertNull($item->get('invalid'));
-        $this->assertSame('some_Value', $item->get('invalid', 'some_Value'));
+        self::assertNull($item->get('invalid'));
+        self::assertSame('some_Value', $item->get('invalid', 'some_Value'));
     }
 
     #[DependsUsingDeepClone('testToArrayMethodWithExtraArguments')]
     public function testAccessPropertiesAndFieldsAsPublicObjectProperties(Item $item): void
     {
-        $this->assertSame('100', $item->id);
-        $this->assertSame('New Item', $item->name);
-        $this->assertSame(68.5, $item->price);
-        $this->assertSame(2, $item->qty);
-        $this->assertSame(15.0, $item->discount);
-        $this->assertSame('New item from collection', $item->description);
-        $this->assertNull($item->invalid);
+        self::assertSame('100', $item->id);
+        self::assertSame('New Item', $item->name);
+        self::assertSame(68.5, $item->price);
+        self::assertSame(2, $item->qty);
+        self::assertSame(15.0, $item->discount);
+        self::assertSame('New item from collection', $item->description);
+        self::assertNull($item->invalid);
     }
 
     public function testExceptionIsThrownForEmptyId(): void

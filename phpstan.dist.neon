@@ -1,6 +1,7 @@
 includes:
     - vendor/phpstan/phpstan-phpunit/extension.neon
     - vendor/phpstan/phpstan-phpunit/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
     level: 6
@@ -11,3 +12,6 @@ parameters:
         TCartOptions: 'array{name: string, autosave: bool, tax: float, shipping: array{amount: float, free: float}}'
         TOptions: 'array{name?: string, autosave?: bool, tax?: float, shipping?: array{amount?: float, free?: float}}'
         TItemArray: 'array{id: string, name: string, price: float, qty: int, discount: float, fields: array<string, mixed>}'
+    strictRules:
+        noVariableVariables: false
+        disallowedConstructs: false

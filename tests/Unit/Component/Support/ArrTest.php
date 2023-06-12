@@ -79,34 +79,34 @@ class ArrTest extends TestCase
     #[DataProvider('intersectKeyRecursiveProvider')]
     public function testIntersectKeyRecursive(array $options, array $expected): void
     {
-        $this->assertSame($expected, Arr::intersectKeyRecursive($options, self::$defaultOptions));
+        self::assertSame($expected, Arr::intersectKeyRecursive($options, self::$defaultOptions));
     }
 
     public function testGet(): void
     {
-        $this->assertTrue(Arr::get(self::$defaultArray, 'autosave'));
+        self::assertTrue(Arr::get(self::$defaultArray, 'autosave'));
     }
 
     public function testGetReturnsDefaultWhenZeroValue(): void
     {
-        $this->assertNull(Arr::get(self::$defaultArray, 'tax'));
+        self::assertNull(Arr::get(self::$defaultArray, 'tax'));
     }
 
     public function testGetCheckOnlyIfKeyExists(): void
     {
-        $this->assertSame(0, Arr::get(self::$defaultArray, 'tax', empty: false));
+        self::assertSame(0, Arr::get(self::$defaultArray, 'tax', empty: false));
     }
 
     public function testGetDefaultValue(): void
     {
-        $this->assertSame('default_value', Arr::get(self::$defaultArray, 'missing', default: 'default_value'));
+        self::assertSame('default_value', Arr::get(self::$defaultArray, 'missing', default: 'default_value'));
     }
 
     public function testGetCheckValueType(): void
     {
-        $this->assertNull(Arr::get(self::$defaultArray, 'fields', type: 'array'));
+        self::assertNull(Arr::get(self::$defaultArray, 'fields', type: 'array'));
 
-        $this->assertSame(
+        self::assertSame(
             ['amount' => 50, 'free'   => 500],
             Arr::get(self::$defaultArray, 'shipping', type: 'array'),
         );
@@ -114,7 +114,7 @@ class ArrTest extends TestCase
 
     public function testGetCheckMultipleValueTypes(): void
     {
-        $this->assertSame(
+        self::assertSame(
             0,
             Arr::get(self::$defaultArray, 'tax', type: ['double', 'integer'], empty: false),
         );
