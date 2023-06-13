@@ -250,13 +250,11 @@ class ShoppingCart
      */
     protected function filterOptions(array $options): array
     {
-        /** @phpstan-var TCartOptions $filteredOptions */
-        $filteredOptions = array_replace_recursive(
+        /** @phpstan-var TCartOptions */
+        return array_replace_recursive(
             $this->options,
             Arr::intersectKeyRecursive($options, $this->options)
         );
-
-        return $filteredOptions;
     }
 
     /**
