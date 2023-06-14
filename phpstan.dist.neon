@@ -5,14 +5,16 @@ includes:
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon
 
 parameters:
-    level: 8
+    level: max
     paths:
         - src
         - tests
     typeAliases:
-        TCartOptions: 'array{name: string, autosave: bool, tax: float, shipping: array{amount: float, free: float}}'
+        TShipping: 'array{amount: float, free: float}'
+        TCartOptions: 'array{name: string, autosave: bool, tax: float, shipping: TShipping}'
         TOptions: 'array{name?: string, autosave?: bool, tax?: float, shipping?: array{amount?: float, free?: float}}'
-        TItemArray: 'array{id: string, name: string, price: float, qty: int, discount: float, fields: array<string, mixed>}'
+        TItemFiels: 'array<string, mixed>'
+        TItemArray: 'array{id: string, name: string, price: float, qty: int, discount: float, fields: TItemFiels}'
     strictRules:
         noVariableVariables: false
         disallowedConstructs: false

@@ -56,6 +56,15 @@ class Item
         $this->qty = $qty;
     }
 
+    /**
+     * @phpstan-return (
+     *      $name is "id" ? string :
+     *      ($name is "name" ? string :
+     *      ($name is "price" ? float :
+     *      ($name is "qty" ? int :
+     *      ($name is "discount" ? float : mixed))))
+     * )
+     */
     public function get(string $name, mixed $default = null): mixed
     {
         if ('fields' != $name && property_exists($this, $name)) {

@@ -48,6 +48,16 @@ class Arr
      * @param  string|string[] $type       Expected type of the value (a gettype() valid value)
      * @param  bool            $empty      Determine whitch function use (isset/empty)
      *
+     * @phpstan-return (
+     *      $arr is TItemArray ? (
+     *          $key is "id" ? string :
+     *          ($key is "name" ? string :
+     *          ($key is "price" ? float :
+     *          ($key is "qty" ? int :
+     *          ($key is "discount" ? float :
+     *          ($key is "fields" ? TItemFiels : mixed)))))
+     *      ) : mixed
+     * )
      * @return mixed of the position or $default value
      */
     public static function get(

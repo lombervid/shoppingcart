@@ -262,6 +262,12 @@ class ShoppingCart
      *
      * @param string $name Option name
      *
+     * @phpstan-return (
+     *      $name is "name" ? string :
+     *      ($name is "autosave" ? bool :
+     *      ($name is "tax" ? float :
+     *      ($name is "shipping" ? TShipping : mixed)))
+     * )
      * @return mixed Option value
      */
     protected function getOption(string $name): mixed
@@ -281,6 +287,7 @@ class ShoppingCart
         $items = $this->storage->get($this->getOption('name'));
 
         if (is_array($items)) {
+            /** @phpstan-var TItemArray $item */
             foreach ($items as $item) {
                 $this->add(new Item(
                     Arr::get($item, 'id'),
