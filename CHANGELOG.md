@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Add `#[Override]` attributes to interface method implementations in `NativeSessionStorage` (PHP 8.3+)
+
+### Changed
+
+- **Breaking:** require PHP >= 8.4 (previously 8.1)
+- Use explicit nullable type declarations (`?Type`) instead of implicit nullability to comply with PHP 8.4 deprecation rules
+
 ## [3.0.0] - 2023-05-31
 
 ### Added
@@ -21,5 +32,5 @@
 - **Breaking:** remove `coupon` property
 - **Breaking:** remove `SymfonySessionStorage` storage
 
-[Unreleased]: https://github.com/lombervid/shoppingcart/compare/v1.0...main
+[Unreleased]: https://github.com/lombervid/shoppingcart/compare/v3.0.0...main
 [3.0.0]: https://github.com/lombervid/shoppingcart/compare/v1.0...v3.0.0

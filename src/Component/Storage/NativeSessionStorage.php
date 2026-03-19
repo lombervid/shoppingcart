@@ -23,16 +23,19 @@ class NativeSessionStorage implements StorageInterface
         return session_status() === PHP_SESSION_ACTIVE;
     }
 
+    #[\Override]
     public function set(string $name, mixed $value): void
     {
         $_SESSION[$name] = $value;
     }
 
+    #[\Override]
     public function get(string $name, mixed $default = ''): mixed
     {
         return $_SESSION[$name] ?? $default;
     }
 
+    #[\Override]
     public function remove(string $name): void
     {
         if (isset($_SESSION[$name])) {
@@ -40,6 +43,7 @@ class NativeSessionStorage implements StorageInterface
         }
     }
 
+    #[\Override]
     public function clear(): void
     {
         $_SESSION = [];
