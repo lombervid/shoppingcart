@@ -13,8 +13,8 @@ parameters:
         TShipping: 'array{amount: float, free: float}'
         TCartOptions: 'array{name: string, autosave: bool, tax: float, shipping: TShipping}'
         TOptions: 'array{name?: string, autosave?: bool, tax?: float, shipping?: array{amount?: float, free?: float}}'
-        TItemFiels: 'array<string, mixed>'
-        TItemArray: 'array{id: string, name: string, price: float, qty: int, discount: float, fields: TItemFiels}'
+        TItemFields: 'array<string, mixed>'
+        TItemArray: 'array{id: string, name: string, price: float, qty: int, discount: float, fields: TItemFields}'
     strictRules:
         noVariableVariables: false
         disallowedConstructs: false

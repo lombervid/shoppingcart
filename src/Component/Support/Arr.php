@@ -55,7 +55,7 @@ class Arr
      *          ($key is "price" ? float :
      *          ($key is "qty" ? int :
      *          ($key is "discount" ? float :
-     *          ($key is "fields" ? TItemFiels : mixed)))))
+     *          ($key is "fields" ? TItemFields : mixed)))))
      *      ) : mixed
      * )
      * @return mixed of the position or $default value
