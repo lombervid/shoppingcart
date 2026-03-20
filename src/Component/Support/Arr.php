@@ -29,7 +29,7 @@ class Arr
                 continue;
             }
 
-            if (!is_array($array2[$key])) {
+            if (!is_array($array2[$key]) || !is_array($value)) {
                 continue;
             }
 
@@ -42,11 +42,11 @@ class Arr
     /**
      * Get value from array
      *
-     * @param  mixed[]         $arr        Array to look for
-     * @param  int|string      $key        Position to look for
-     * @param  mixed           $default    Default Value
-     * @param  string|string[] $type       Expected type of the value (a gettype() valid value)
-     * @param  bool            $empty      Determine whitch function use (isset/empty)
+     * @param  mixed[]              $arr        Array to look for
+     * @param  int|string           $key        Position to look for
+     * @param  mixed                $default    Default Value
+     * @param  string|string[]|null $type       Expected type of the value (a gettype() valid value)
+     * @param  bool                 $empty      Determine whitch function use (isset/empty)
      *
      * @phpstan-return (
      *      $arr is TItemArray ? (
@@ -64,7 +64,7 @@ class Arr
         array $arr,
         int|string $key,
         mixed $default = null,
-        string|array $type = null,
+        string|array|null $type = null,
         bool $empty = true,
     ) {
         if (!array_key_exists($key, $arr)) {

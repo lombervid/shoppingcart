@@ -47,9 +47,9 @@ class ShoppingCart
      *
      * @phpstan-param TOptions $options
      * @param array $options Cart options.
-     * @param StorageInterface $storage Cart storage.
+     * @param ?StorageInterface $storage Cart storage.
      */
-    public function __construct(array $options = [], StorageInterface $storage = null)
+    public function __construct(array $options = [], ?StorageInterface $storage = null)
     {
         $this->items   = [];
         $this->storage = $storage ?? new NativeSessionStorage();
