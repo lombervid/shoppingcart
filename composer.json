@@ -17,12 +17,11 @@
         "php": "^8.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.1",
-        "symfony/var-dumper": "^6.2",
-        "phpstan/phpstan": "^1.10",
-        "phpstan/phpstan-strict-rules": "^1.5",
-        "phpstan/phpstan-phpunit": "^1.3",
-        "phpstan/phpstan-deprecation-rules": "^1.1"
+        "phpunit/phpunit": "^10.5",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-deprecation-rules": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -33,5 +32,13 @@
         "psr-4": {
             "Lombervid\\ShoppingCart\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test:unit": "./vendor/bin/phpunit",
+        "test:types": "./vendor/bin/phpstan",
+        "test": [
+            "@test:types",
+            "@test:unit"
+        ]
     }
 }
