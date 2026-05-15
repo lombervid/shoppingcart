@@ -71,12 +71,13 @@ class Arr
             return $default;
         }
 
+        /** @phpstan-ignore empty.notAllowed */
         if (!empty($type)) {
-            if (gettype($type) == 'string') {
-                if (gettype($arr[$key]) != $type) {
+            if (gettype($type) === 'string') {
+                if (gettype($arr[$key]) !== $type) {
                     return $default;
                 }
-            } elseif (gettype($type) == 'array') {
+            } elseif (gettype($type) === 'array') {
                 if (!in_array(gettype($arr[$key]), $type, true)) {
                     return $default;
                 }
@@ -84,6 +85,7 @@ class Arr
         }
 
         if ($empty) {
+            /** @phpstan-ignore empty.notAllowed */
             return empty($arr[$key]) ? $default : $arr[$key];
         }
 

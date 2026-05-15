@@ -26,12 +26,13 @@ class NativeSessionStorageTest extends TestCase
         self::assertSame([], $_SESSION);
 
         $storage->set('name', 'my_cart');
-        self::assertSame(['name' => 'my_cart'], $_SESSION);
+        self::assertSame(['name' => 'my_cart'], $_SESSION); // @phpstan-ignore staticMethod.impossibleType
 
         $storage->set('total', 34.56);
-        self::assertSame(['name' => 'my_cart', 'total' => 34.56], $_SESSION);
+        self::assertSame(['name' => 'my_cart', 'total' => 34.56], $_SESSION); // @phpstan-ignore staticMethod.impossibleType
 
         $storage->set('fields', [['id' => 16], ['id' => 1256]]);
+        /** @phpstan-ignore staticMethod.impossibleType */
         self::assertSame([
             'name' => 'my_cart',
             'total' => 34.56,
@@ -67,7 +68,7 @@ class NativeSessionStorageTest extends TestCase
         ], $_SESSION);
 
         $storage->remove('fields');
-        self::assertSame(['name' => 'my_cart', 'total' => 34.56], $_SESSION);
+        self::assertSame(['name' => 'my_cart', 'total' => 34.56], $_SESSION); // @phpstan-ignore staticMethod.impossibleType
 
         return $storage;
     }
@@ -78,6 +79,6 @@ class NativeSessionStorageTest extends TestCase
         self::assertSame(['name' => 'my_cart', 'total' => 34.56], $_SESSION);
 
         $storage->clear();
-        self::assertSame([], $_SESSION);
+        self::assertSame([], $_SESSION); // @phpstan-ignore staticMethod.impossibleType
     }
 }

@@ -67,7 +67,8 @@ class Item
      */
     public function get(string $name, mixed $default = null): mixed
     {
-        if ('fields' != $name && property_exists($this, $name)) {
+        if ('fields' !== $name && property_exists($this, $name)) {
+            /** @phpstan-ignore property.dynamicName */
             return $this->{$name};
         }
 

@@ -15,6 +15,3 @@ parameters:
         TOptions: 'array{name?: string, autosave?: bool, tax?: float, shipping?: array{amount?: float, free?: float}}'
         TItemFields: 'array<string, mixed>'
         TItemArray: 'array{id: string, name: string, price: float, qty: int, discount: float, fields: TItemFields}'
-    strictRules:
-        noVariableVariables: false
-        disallowedConstructs: false
