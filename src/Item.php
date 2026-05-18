@@ -18,12 +18,12 @@ class Item
      * @param array<string, mixed> $fields
      */
     public function __construct(
-        private string $id,
-        private string $name,
-        private float $price,
+        private readonly string $id,
+        private readonly string $name,
+        private readonly float $price,
         private int $qty = 1,
         private array $fields = [],
-        private float $discount = 0,
+        private readonly float $discount = 0,
     ) {
         if ($id === '') {
             throw new \InvalidArgumentException('ID must not be empty');
