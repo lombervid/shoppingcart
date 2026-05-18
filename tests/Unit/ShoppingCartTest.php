@@ -14,6 +14,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 class ShoppingCartTest extends TestCase
 {
     private StorageInterface&MockObject $storage;
+
     private ShoppingCart $cart;
 
     public function testThereAreNoItemsWhenCartIsCreated(): void
@@ -171,6 +172,7 @@ class ShoppingCartTest extends TestCase
         ) {
             $cart->add(new Item($id, $name, $price, $qty, $fields, $discount));
         }
+
         self::assertSame($items, $cart->toArray());
     }
 
@@ -189,7 +191,7 @@ class ShoppingCartTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<TItemArray>
+     * @return array<TItemArray>
      */
     protected function items(): array
     {

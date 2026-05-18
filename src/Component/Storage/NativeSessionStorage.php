@@ -13,10 +13,8 @@ class NativeSessionStorage implements StorageInterface
 
     public function start(): void
     {
-        if (!$this->isStarted()) {
-            if (!session_start()) {
-                throw new \RuntimeException('Failed to start the session');
-            }
+        if (!$this->isStarted() && !session_start()) {
+            throw new \RuntimeException('Failed to start the session');
         }
     }
 

@@ -24,14 +24,14 @@ class ShoppingCart
     /**
      * @var Item[] Array of items.
      */
-    protected array $items;
+    protected array $items = [];
 
     /**
      * @var StorageInterface Storage object.
      */
     protected StorageInterface $storage;
 
-    /** @phpstan-var TCartOptions */
+    /** @var TCartOptions */
     protected array $options = [
         'name'     => 'shopping_cart',
         'autosave' => true,
@@ -45,13 +45,11 @@ class ShoppingCart
     /**
      * Constructor.
      *
-     * @phpstan-param TOptions $options
-     * @param array $options Cart options.
+     * @param TOptions $options Cart options.
      * @param ?StorageInterface $storage Cart storage.
      */
     public function __construct(array $options = [], ?StorageInterface $storage = null)
     {
-        $this->items   = [];
         $this->storage = $storage ?? new NativeSessionStorage();
         $this->options = $this->filterOptions($options);
         $this->load();
@@ -190,8 +188,6 @@ class ShoppingCart
 
     /**
      * Remove all items
-     *
-     * @return static
      */
     public function clear(): static
     {
@@ -231,26 +227,23 @@ class ShoppingCart
     /**
      * Return a list of items as array
      *
-     * @phpstan-return array<TItemArray>
-     * @return array List of items as array
+     * @return array<TItemArray> List of items as array
      */
     public function toArray(): array
     {
-        return array_map(fn($item) => $item->toArray(), $this->items);
+        return array_map(fn(Item $item): array => $item->toArray(), $this->items);
     }
 
     /**
      * Filter the cart options
      *
-     * @phpstan-param TOptions $options
-     * @phpstan-return TCartOptions
-     * @param array $options Cart options
+     * @param TOptions $options Cart options
      *
-     * @return array Filtered options
+     * @return TCartOptions Filtered options
      */
     protected function filterOptions(array $options): array
     {
-        /** @phpstan-var TCartOptions */
+        /** @var TCartOptions */
         return array_replace_recursive(
             $this->options,
             Arr::intersectKeyRecursive($options, $this->options)
@@ -287,7 +280,7 @@ class ShoppingCart
         $items = $this->storage->get($this->getOption('name'));
 
         if (is_array($items)) {
-            /** @phpstan-var TItemArray $item */
+            /** @var TItemArray $item */
             foreach ($items as $item) {
                 $this->add(new Item(
                     Arr::get($item, 'id'),

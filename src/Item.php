@@ -15,7 +15,7 @@ namespace Lombervid\ShoppingCart;
 class Item
 {
     /**
-     * @phpstan-param array<string, mixed> $fields
+     * @param array<string, mixed> $fields
      */
     public function __construct(
         private string $id,
@@ -64,6 +64,7 @@ class Item
      *      ($name is "qty" ? int :
      *      ($name is "discount" ? float : mixed))))
      * )
+     * @return mixed Attribute value
      */
     public function get(string $name, mixed $default = null): mixed
     {
@@ -100,7 +101,7 @@ class Item
     }
 
     /**
-     * @phpstan-return TItemArray
+     * @return TItemArray
      */
     public function toArray(): array
     {
