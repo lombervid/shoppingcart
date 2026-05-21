@@ -9,7 +9,11 @@ return RectorConfig::configure()
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ])
+    ->withRootFiles()
     ->withPhpSets()
+    ->withComposerBased(phpunit: true)
+    ->withImportNames(importShortClasses: false, removeUnusedImports: true)
+    ->withTreatClassesAsFinal()
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Lombervid\ShoppingCart\Component\Support;
 
-class Arr
+final class Arr
 {
     /**
      * Recursively computes the intersection of arrays using keys for comparison.
@@ -33,7 +33,7 @@ class Arr
                 continue;
             }
 
-            $value = static::intersectKeyRecursive($value, $array2[$key]);
+            $value = self::intersectKeyRecursive($value, $array2[$key]);
         }
 
         return $array1;
