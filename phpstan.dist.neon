@@ -9,6 +9,10 @@ parameters:
     paths:
         - src
         - tests
+    ignoreErrors:
+        -
+            identifier: staticMethod.dynamicCall
+            path: tests/*
     typeAliases:
         TShipping: 'array{amount: float, free: float}'
         TCartOptions: 'array{name: string, autosave: bool, tax: float, shipping: TShipping}'

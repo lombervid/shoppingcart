@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Lombervid\ShoppingCart\Component\Storage\NativeSessionStorage;
 use PHPUnit\Framework\Attributes\Depends;
 
-class NativeSessionStorageTest extends TestCase
+final class NativeSessionStorageTest extends TestCase
 {
     public function testInitialization(): NativeSessionStorage
     {
-        self::assertContains(session_status(), [PHP_SESSION_NONE, PHP_SESSION_DISABLED ]);
+        $this->assertContains(session_status(), [PHP_SESSION_NONE, PHP_SESSION_DISABLED ]);
 
         $storage = new NativeSessionStorage();
-        self::assertSame(PHP_SESSION_ACTIVE, session_status());
+        $this->assertSame(PHP_SESSION_ACTIVE, session_status());
 
         return $storage;
     }
@@ -23,17 +23,17 @@ class NativeSessionStorageTest extends TestCase
     #[Depends('testInitialization')]
     public function testSetValue(NativeSessionStorage $storage): NativeSessionStorage
     {
-        self::assertSame([], $_SESSION);
+        $this->assertSame([], $_SESSION);
 
         $storage->set('name', 'my_cart');
-        self::assertSame(['name' => 'my_cart'], $_SESSION); // @phpstan-ignore staticMethod.impossibleType
+        $this->assertSame(['name' => 'my_cart'], $_SESSION); // @phpstan-ignore method.impossibleType
 
         $storage->set('total', 34.56);
-        self::assertSame(['name' => 'my_cart', 'total' => 34.56], $_SESSION); // @phpstan-ignore staticMethod.impossibleType
+        $this->assertSame(['name' => 'my_cart', 'total' => 34.56], $_SESSION); // @phpstan-ignore method.impossibleType
 
         $storage->set('fields', [['id' => 16], ['id' => 1256]]);
-        /** @phpstan-ignore staticMethod.impossibleType */
-        self::assertSame([
+        /** @phpstan-ignore method.impossibleType */
+        $this->assertSame([
             'name' => 'my_cart',
             'total' => 34.56,
             'fields' => [
@@ -48,9 +48,9 @@ class NativeSessionStorageTest extends TestCase
     #[Depends('testSetValue')]
     public function testGetValue(NativeSessionStorage $storage): NativeSessionStorage
     {
-        self::assertSame('my_cart', $storage->get('name'));
-        self::assertSame(34.56, $storage->get('total'));
-        self::assertSame([['id' => 16], ['id' => 1256]], $storage->get('fields'));
+        $this->assertSame('my_cart', $storage->get('name'));
+        $this->assertEqualsWithDelta(34.56, $storage->get('total'), PHP_FLOAT_EPSILON);
+        $this->assertSame([['id' => 16], ['id' => 1256]], $storage->get('fields'));
 
         return $storage;
     }
@@ -58,7 +58,7 @@ class NativeSessionStorageTest extends TestCase
     #[Depends('testGetValue')]
     public function testRemoveValue(NativeSessionStorage $storage): NativeSessionStorage
     {
-        self::assertSame([
+        $this->assertSame([
             'name' => 'my_cart',
             'total' => 34.56,
             'fields' => [
@@ -68,7 +68,7 @@ class NativeSessionStorageTest extends TestCase
         ], $_SESSION);
 
         $storage->remove('fields');
-        self::assertSame(['name' => 'my_cart', 'total' => 34.56], $_SESSION); // @phpstan-ignore staticMethod.impossibleType
+        $this->assertSame(['name' => 'my_cart', 'total' => 34.56], $_SESSION); // @phpstan-ignore method.impossibleType
 
         return $storage;
     }
@@ -76,9 +76,9 @@ class NativeSessionStorageTest extends TestCase
     #[Depends('testRemoveValue')]
     public function testClearSession(NativeSessionStorage $storage): void
     {
-        self::assertSame(['name' => 'my_cart', 'total' => 34.56], $_SESSION);
+        $this->assertSame(['name' => 'my_cart', 'total' => 34.56], $_SESSION);
 
         $storage->clear();
-        self::assertSame([], $_SESSION); // @phpstan-ignore staticMethod.impossibleType
+        $this->assertSame([], $_SESSION); // @phpstan-ignore method.impossibleType
     }
 }

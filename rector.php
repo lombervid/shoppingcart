@@ -20,4 +20,8 @@ return RectorConfig::configure()
         codingStyle: true,
         typeDeclarations: true,
         typeDeclarationDocblocks: true,
+        instanceOf: true,
+        earlyReturn: true,
+        rectorPreset: true,
+        phpunitCodeQuality: true,
     );

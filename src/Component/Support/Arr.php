@@ -29,10 +29,11 @@ final class Arr
                 continue;
             }
 
-            if (!is_array($array2[$key]) || !is_array($value)) {
+            if (!is_array($array2[$key])) {
                 continue;
             }
 
+            // @phpstan-ignore argument.type (`$value` and `$array2[$key]` are the same type)
             $value = self::intersectKeyRecursive($value, $array2[$key]);
         }
 

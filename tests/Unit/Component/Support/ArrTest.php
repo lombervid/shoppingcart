@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Lombervid\ShoppingCart\Component\Support\Arr;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class ArrTest extends TestCase
+final class ArrTest extends TestCase
 {
     /** @var TCartOptions */
     protected static $defaultOptions = [
@@ -35,40 +35,38 @@ class ArrTest extends TestCase
     ];
 
     /**
-     * @return array<string, array{mixed[], TOptions}>
+     * @return \Iterator<string, array{mixed[], TOptions}>
      */
-    public static function intersectKeyRecursiveProvider(): array
+    public static function intersectKeyRecursiveProvider(): \Iterator
     {
-        return [
-            'empty values' => [[], []],
-            'root level' => [
-                ['tax' => 12],
-                ['tax' => 12.0],
-            ],
-            'wrong value type' => [
-                ['autosave' => 'true'],
-                [],
-            ],
-            'wrong value type 2' => [
-                ['tax' => ['12']],
-                [],
-            ],
-            'sub level' => [
-                ['shipping' => ['free' => 13.0]],
-                ['shipping' => ['free' => 13.0]],
-            ],
-            'sub level wrong value type' => [
-                ['shipping' => ['free' => true, 'amount' => 50]],
-                ['shipping' => ['amount' => 50.0]],
-            ],
-            'numeric string value' => [
-                ['tax' => '12', 'shipping' => ['amount' => '34.5']],
-                ['tax' => 12.0, 'shipping' => ['amount' => 34.5]],
-            ],
-            'invalid indexes' => [
-                ['some' => 23, 'name' => 'my_cart', 'shipping' => ['amount' => '34.5', 'invalid' => 23]],
-                ['name' => 'my_cart', 'shipping' => ['amount' => 34.5]],
-            ],
+        yield 'empty values' => [[], []];
+        yield 'root level' => [
+            ['tax' => 12],
+            ['tax' => 12.0],
+        ];
+        yield 'wrong value type' => [
+            ['autosave' => 'true'],
+            [],
+        ];
+        yield 'wrong value type 2' => [
+            ['tax' => ['12']],
+            [],
+        ];
+        yield 'sub level' => [
+            ['shipping' => ['free' => 13.0]],
+            ['shipping' => ['free' => 13.0]],
+        ];
+        yield 'sub level wrong value type' => [
+            ['shipping' => ['free' => true, 'amount' => 50]],
+            ['shipping' => ['amount' => 50.0]],
+        ];
+        yield 'numeric string value' => [
+            ['tax' => '12', 'shipping' => ['amount' => '34.5']],
+            ['tax' => 12.0, 'shipping' => ['amount' => 34.5]],
+        ];
+        yield 'invalid indexes' => [
+            ['some' => 23, 'name' => 'my_cart', 'shipping' => ['amount' => '34.5', 'invalid' => 23]],
+            ['name' => 'my_cart', 'shipping' => ['amount' => 34.5]],
         ];
     }
 
@@ -79,34 +77,34 @@ class ArrTest extends TestCase
     #[DataProvider('intersectKeyRecursiveProvider')]
     public function testIntersectKeyRecursive(array $options, array $expected): void
     {
-        self::assertSame($expected, Arr::intersectKeyRecursive($options, self::$defaultOptions));
+        $this->assertSame($expected, Arr::intersectKeyRecursive($options, self::$defaultOptions));
     }
 
     public function testGet(): void
     {
-        self::assertTrue(Arr::get(self::$defaultArray, 'autosave'));
+        $this->assertTrue(Arr::get(self::$defaultArray, 'autosave'));
     }
 
     public function testGetReturnsDefaultWhenZeroValue(): void
     {
-        self::assertNull(Arr::get(self::$defaultArray, 'tax'));
+        $this->assertNull(Arr::get(self::$defaultArray, 'tax'));
     }
 
     public function testGetCheckOnlyIfKeyExists(): void
     {
-        self::assertSame(0, Arr::get(self::$defaultArray, 'tax', empty: false));
+        $this->assertSame(0, Arr::get(self::$defaultArray, 'tax', empty: false));
     }
 
     public function testGetDefaultValue(): void
     {
-        self::assertSame('default_value', Arr::get(self::$defaultArray, 'missing', default: 'default_value'));
+        $this->assertSame('default_value', Arr::get(self::$defaultArray, 'missing', default: 'default_value'));
     }
 
     public function testGetCheckValueType(): void
     {
-        self::assertNull(Arr::get(self::$defaultArray, 'fields', type: 'array'));
+        $this->assertNull(Arr::get(self::$defaultArray, 'fields', type: 'array'));
 
-        self::assertSame(
+        $this->assertSame(
             ['amount' => 50, 'free'   => 500],
             Arr::get(self::$defaultArray, 'shipping', type: 'array'),
         );
@@ -114,7 +112,7 @@ class ArrTest extends TestCase
 
     public function testGetCheckMultipleValueTypes(): void
     {
-        self::assertSame(
+        $this->assertSame(
             0,
             Arr::get(self::$defaultArray, 'tax', type: ['double', 'integer'], empty: false),
         );

@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Lombervid\ShoppingCart\Item;
 use PHPUnit\Framework\Attributes\DependsUsingDeepClone;
 
-class ItemTest extends TestCase
+final class ItemTest extends TestCase
 {
     public function testSingleItem(): Item
     {
         $item = new Item('1', 'Item', 15);
 
-        self::assertSame(15.0, $item->price());
-        self::assertSame(15.0, $item->total());
+        $this->assertEqualsWithDelta(15.0, $item->price(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(15.0, $item->total(), PHP_FLOAT_EPSILON);
 
         return $item;
     }
@@ -35,48 +35,48 @@ class ItemTest extends TestCase
     #[DependsUsingDeepClone('testSingleItem')]
     public function testAddQuantity(Item $item): void
     {
-        self::assertSame(15.0, $item->total());
+        $this->assertEqualsWithDelta(15.0, $item->total(), PHP_FLOAT_EPSILON);
 
         $item->add(2);
-        self::assertSame(45.0, $item->total());
+        $this->assertEqualsWithDelta(45.0, $item->total(), PHP_FLOAT_EPSILON);
     }
 
     #[DependsUsingDeepClone('testSingleItem')]
     public function testUpdateQuantity(Item $item): void
     {
-        self::assertSame(15.0, $item->total());
+        $this->assertEqualsWithDelta(15.0, $item->total(), PHP_FLOAT_EPSILON);
 
         $item->update(2);
-        self::assertSame(30.0, $item->total());
+        $this->assertEqualsWithDelta(30.0, $item->total(), PHP_FLOAT_EPSILON);
     }
 
     public function testAddingItemWithQuantity(): void
     {
         $item = new Item('1', 'Item', 15, 3);
 
-        self::assertSame(15.0, $item->price());
-        self::assertSame(45.0, $item->total());
+        $this->assertEqualsWithDelta(15.0, $item->price(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(45.0, $item->total(), PHP_FLOAT_EPSILON);
     }
 
     public function testNoDiscount(): void
     {
         $item = new Item('1', 'Item', 15);
-        self::assertFalse($item->hasDiscount());
-        self::assertSame(15.0, $item->total());
+        $this->assertFalse($item->hasDiscount());
+        $this->assertEqualsWithDelta(15.0, $item->total(), PHP_FLOAT_EPSILON);
     }
 
     public function testDiscountApplies(): void
     {
         $item = new Item('1', 'Item', 15, discount: 10);
-        self::assertTrue($item->hasDiscount());
-        self::assertSame(5.0, $item->total());
+        $this->assertTrue($item->hasDiscount());
+        $this->assertEqualsWithDelta(5.0, $item->total(), PHP_FLOAT_EPSILON);
     }
 
     public function testDiscountAppliesWithQuantity(): void
     {
         $item = new Item('1', 'Item', 15, 3, discount: 10);
-        self::assertTrue($item->hasDiscount());
-        self::assertSame(15.0, $item->total());
+        $this->assertTrue($item->hasDiscount());
+        $this->assertEqualsWithDelta(15.0, $item->total(), PHP_FLOAT_EPSILON);
     }
 
     public function testExceptionsAreThrownWithNegativeDiscount(): void
@@ -89,7 +89,7 @@ class ItemTest extends TestCase
     {
         $item = new Item('1', 'Item', 15);
 
-        self::assertSame([
+        $this->assertSame([
             'id' => '1',
             'name' => 'Item',
             'price' => 15.0,
@@ -105,7 +105,7 @@ class ItemTest extends TestCase
             'description' => 'New item from collection',
         ], 15);
 
-        self::assertSame([
+        $this->assertSame([
             'id' => '100',
             'name' => 'New Item',
             'price' => 68.5,
@@ -122,36 +122,36 @@ class ItemTest extends TestCase
     #[DependsUsingDeepClone('testToArrayMethodWithExtraArguments')]
     public function testGetProperties(Item $item): void
     {
-        self::assertSame('100', $item->get('id'));
-        self::assertSame('New Item', $item->get('name'));
-        self::assertSame(68.5, $item->get('price'));
-        self::assertSame(2, $item->get('qty'));
-        self::assertSame(15.0, $item->get('discount'));
+        $this->assertSame('100', $item->get('id'));
+        $this->assertSame('New Item', $item->get('name'));
+        $this->assertEqualsWithDelta(68.5, $item->get('price'), PHP_FLOAT_EPSILON);
+        $this->assertSame(2, $item->get('qty'));
+        $this->assertEqualsWithDelta(15.0, $item->get('discount'), PHP_FLOAT_EPSILON);
     }
 
     #[DependsUsingDeepClone('testToArrayMethodWithExtraArguments')]
     public function testGetExtraFields(Item $item): void
     {
-        self::assertSame('New item from collection', $item->get('description'));
+        $this->assertSame('New item from collection', $item->get('description'));
     }
 
     #[DependsUsingDeepClone('testToArrayMethodWithExtraArguments')]
     public function testDefaultValueOnInvalidField(Item $item): void
     {
-        self::assertNull($item->get('invalid'));
-        self::assertSame('some_Value', $item->get('invalid', 'some_Value'));
+        $this->assertNull($item->get('invalid'));
+        $this->assertSame('some_Value', $item->get('invalid', 'some_Value'));
     }
 
     #[DependsUsingDeepClone('testToArrayMethodWithExtraArguments')]
     public function testAccessPropertiesAndFieldsAsPublicObjectProperties(Item $item): void
     {
-        self::assertSame('100', $item->id);
-        self::assertSame('New Item', $item->name);
-        self::assertSame(68.5, $item->price);
-        self::assertSame(2, $item->qty);
-        self::assertSame(15.0, $item->discount);
-        self::assertSame('New item from collection', $item->description);
-        self::assertNull($item->invalid);
+        $this->assertSame('100', $item->id);
+        $this->assertSame('New Item', $item->name);
+        $this->assertEqualsWithDelta(68.5, $item->price, PHP_FLOAT_EPSILON);
+        $this->assertSame(2, $item->qty);
+        $this->assertEqualsWithDelta(15.0, $item->discount, PHP_FLOAT_EPSILON);
+        $this->assertSame('New item from collection', $item->description);
+        $this->assertNull($item->invalid);
     }
 
     public function testExceptionIsThrownForEmptyId(): void

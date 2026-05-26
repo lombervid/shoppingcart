@@ -11,7 +11,7 @@ use Lombervid\ShoppingCart\Item;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class ShoppingCartTest extends TestCase
+final class ShoppingCartTest extends TestCase
 {
     private StorageInterface&MockObject $storage;
 
@@ -19,16 +19,16 @@ class ShoppingCartTest extends TestCase
 
     public function testThereAreNoItemsWhenCartIsCreated(): void
     {
-        self::assertSame([], $this->cart->items());
-        self::assertSame(0, $this->cart->totalItems());
-        self::assertTrue($this->cart->isEmpty());
+        $this->assertSame([], $this->cart->items());
+        $this->assertSame(0, $this->cart->totalItems());
+        $this->assertTrue($this->cart->isEmpty());
     }
 
     public function testNoShippingCostWhenCartIsEmpty(): ShoppingCart
     {
         $options = ['shipping' => ['amount' => 150]];
         $cart = new ShoppingCart($options, $this->storage);
-        self::assertSame(0.0, $cart->total());
+        $this->assertEqualsWithDelta(0.0, $cart->total(), PHP_FLOAT_EPSILON);
 
         return $cart;
     }
@@ -36,7 +36,7 @@ class ShoppingCartTest extends TestCase
     public function testAddItem(): ShoppingCart
     {
         $this->cart->add(new Item('15', 'Item', 50.5));
-        self::assertSame(1, $this->cart->totalItems());
+        $this->assertSame(1, $this->cart->totalItems());
 
         return $this->cart;
     }
@@ -45,8 +45,8 @@ class ShoppingCartTest extends TestCase
     public function testItemAlreadyInCartIsAddedCorrectly(ShoppingCart $cart): ShoppingCart
     {
         $cart->add(new Item('15', 'Item', 50.5));
-        self::assertSame(1, $cart->totalItems());
-        self::assertSame(101.0, $cart->total());
+        $this->assertSame(1, $cart->totalItems());
+        $this->assertEqualsWithDelta(101.0, $cart->total(), PHP_FLOAT_EPSILON);
 
         return $cart;
     }
@@ -55,8 +55,8 @@ class ShoppingCartTest extends TestCase
     public function testNewItemIsAddedCorrectly(ShoppingCart $cart): ShoppingCart
     {
         $cart->add(new Item('25', 'Item 2', 100));
-        self::assertSame(2, $cart->totalItems());
-        self::assertSame(201.0, $cart->total());
+        $this->assertSame(2, $cart->totalItems());
+        $this->assertEqualsWithDelta(201.0, $cart->total(), PHP_FLOAT_EPSILON);
 
         return $cart;
     }
@@ -65,7 +65,7 @@ class ShoppingCartTest extends TestCase
     public function testAddItemAlreadyInCartReplacingQuantity(ShoppingCart $cart): ShoppingCart
     {
         $cart->add(new Item('15', 'Item', 50.5), false);
-        self::assertSame(150.5, $cart->total());
+        $this->assertEqualsWithDelta(150.5, $cart->total(), PHP_FLOAT_EPSILON);
 
         return $cart;
     }
@@ -74,7 +74,7 @@ class ShoppingCartTest extends TestCase
     public function testAddingItemAlreadyInCartKeepsOriginalPrice(ShoppingCart $cart): ShoppingCart
     {
         $cart->add(new Item('15', 'Item', 1500));
-        self::assertSame(201.0, $cart->total());
+        $this->assertEqualsWithDelta(201.0, $cart->total(), PHP_FLOAT_EPSILON);
 
         return $cart;
     }
@@ -83,8 +83,8 @@ class ShoppingCartTest extends TestCase
     public function testRemoveItem(ShoppingCart $cart): ShoppingCart
     {
         $cart->remove('15');
-        self::assertSame(1, $cart->totalItems());
-        self::assertSame(100.0, $cart->total());
+        $this->assertSame(1, $cart->totalItems());
+        $this->assertEqualsWithDelta(100.0, $cart->total(), PHP_FLOAT_EPSILON);
 
         return $cart;
     }
@@ -92,27 +92,27 @@ class ShoppingCartTest extends TestCase
     #[Depends('testRemoveItem')]
     public function testClearCart(ShoppingCart $cart): void
     {
-        self::assertSame(1, $cart->totalItems());
-        self::assertSame(100.0, $cart->total());
+        $this->assertSame(1, $cart->totalItems());
+        $this->assertEqualsWithDelta(100.0, $cart->total(), PHP_FLOAT_EPSILON);
 
         $cart->clear();
-        self::assertSame([], $cart->items());
-        self::assertSame(0, $cart->totalItems());
-        self::assertSame(0.0, $cart->total());
+        $this->assertSame([], $cart->items());
+        $this->assertSame(0, $cart->totalItems());
+        $this->assertEqualsWithDelta(0.0, $cart->total(), PHP_FLOAT_EPSILON);
     }
 
     public function testTax(): void
     {
         $cart = new ShoppingCart(['tax' => 15], $this->storage);
         $cart->add(new Item('25', 'Item', 100));
-        self::assertSame(115.0, $cart->total());
+        $this->assertEqualsWithDelta(115.0, $cart->total(), PHP_FLOAT_EPSILON);
     }
 
     #[Depends('testNoShippingCostWhenCartIsEmpty')]
     public function testShipping(ShoppingCart $cart): void
     {
         $cart->add(new Item('25', 'Item', 100));
-        self::assertSame(250.0, $cart->total());
+        $this->assertEqualsWithDelta(250.0, $cart->total(), PHP_FLOAT_EPSILON);
     }
 
     public function testFreeShippingAfterCertainAmount(): void
@@ -126,13 +126,13 @@ class ShoppingCartTest extends TestCase
 
         $cart = new ShoppingCart($options, $this->storage);
         $cart->add(new Item('25', 'Item', 100));
-        self::assertSame(250.0, $cart->total());
+        $this->assertEqualsWithDelta(250.0, $cart->total(), PHP_FLOAT_EPSILON);
 
         $cart->add(new Item('15', 'Item', 399));
-        self::assertSame(649.0, $cart->total());
+        $this->assertEqualsWithDelta(649.0, $cart->total(), PHP_FLOAT_EPSILON);
 
         $cart->add(new Item('13', 'Item', 1));
-        self::assertSame(500.0, $cart->total());
+        $this->assertEqualsWithDelta(500.0, $cart->total(), PHP_FLOAT_EPSILON);
     }
 
     public function testShippingAndTaxt(): void
@@ -147,10 +147,10 @@ class ShoppingCartTest extends TestCase
 
         $cart = new ShoppingCart($options, $this->storage);
         $cart->add(new Item('25', 'Item', 100));
-        self::assertSame(287.5, $cart->total());
+        $this->assertEqualsWithDelta(287.5, $cart->total(), PHP_FLOAT_EPSILON);
 
         $cart->add(new Item('15', 'Item', 600));
-        self::assertSame(805.00, $cart->total());
+        $this->assertEqualsWithDelta(805.00, $cart->total(), PHP_FLOAT_EPSILON);
     }
 
     public function testToArray(): void
@@ -158,7 +158,7 @@ class ShoppingCartTest extends TestCase
         $items = $this->items();
 
         $cart = new ShoppingCart(storage: $this->storage);
-        self::assertSame([], $cart->toArray());
+        $this->assertSame([], $cart->toArray());
 
         foreach (
             $items as [
@@ -173,7 +173,7 @@ class ShoppingCartTest extends TestCase
             $cart->add(new Item($id, $name, $price, $qty, $fields, $discount));
         }
 
-        self::assertSame($items, $cart->toArray());
+        $this->assertSame($items, $cart->toArray());
     }
 
     public function testLoadCartFromStorage(): void
@@ -181,13 +181,13 @@ class ShoppingCartTest extends TestCase
         $items = $this->items();
         $this
             ->storage
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('get')
             ->with(self::identicalTo('shopping_cart'))
             ->willReturn($items);
 
         $cart = new ShoppingCart(storage: $this->storage);
-        self::assertSame($items, $cart->toArray());
+        $this->assertSame($items, $cart->toArray());
     }
 
     /**
